@@ -1,0 +1,1 @@
+print("Testaus Illia toiminut ok")
