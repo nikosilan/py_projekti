@@ -9,15 +9,14 @@ yhteys = mysql.connector.connect(
     autocommit=True
 )
 
-def pelaaja_haku():
-    sql = f"Select screen_name From game WHERE screen_name = 'heini'"
+def pelaaja_haku(pelaaja):
+    sql = f"Select co2_budget From game WHERE screen_name = '{pelaaja}'"
     kursori = yhteys.cursor()
     kursori.execute(sql)
     tulos = kursori.fetchone()
-    if tulos:
-        print("toimii")
+
     return print(tulos)
 
-pelaaja_haku()
-kayttaja = input("Anna pelajaan nimi: ")
-pelaaja_haku(kayttaja)'''
+
+kayttaja = input("Anna pelajaan nimi: ").lower()
+pelaaja_haku(kayttaja)
