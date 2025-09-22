@@ -10,7 +10,7 @@ yhteys = mysql.connector.connect(
 )
 
 def pelaaja_haku(pelaaja):
-    sql = f"Select co2_budget From game WHERE screen_name = '{pelaaja}'"
+    sql = f"SELECT co2_budget FROM game WHERE screen_name = '{pelaaja}'"
     kursori = yhteys.cursor()
     kursori.execute(sql)
     tulos = kursori.fetchone()
