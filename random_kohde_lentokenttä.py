@@ -37,3 +37,4 @@ random_kohteet()
 tulosta_numeroitu_lista(destinations)
 
 
+
