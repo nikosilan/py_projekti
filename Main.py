@@ -1,34 +1,25 @@
-lentokentat = ["Helsinki", "Tampere", "Turku", "Oulu", "Rovaniemi"]
+import mysql.connector
 
-# Reitit
-reitit = {
-    "Helsinki": ["Tampere", "Turku", "Oulu"],
-    "Tampere": ["Helsinki", "Oulu"],
-    "Turku": ["Helsinki", "Rovaniemi"],
-    "Oulu": ["Helsinki", "Tampere", "Rovaniemi"],
-    "Rovaniemi": ["Turku", "Oulu"]
-}
+# Kysytään käyttäjänimi
+nimi = input("Käyttäjä: ")
 
-print("Tervetuloa tekstipohjaiseen lentopeliin!")
-print("Lentokentät ja niiden reitit:")
-for kentta, kohteet in reitit.items():
-    print(f"{kentta} -> {', '.join(kohteet)}")
+# Tarkistetaan käyttäjänimi ja luodaan oikea yhteys
+if nimi == "niko":
+    yhteys = mysql.connector.connect(
+        host='127.0.0.1',
+        port=3306,
+        database='lentopeli',
+        user='niko',
+        password='salasana',
+        autocommit=True
+    )
 
-# Pelaajan aloituskenttä
-nykyinen_kentta = input("\nValitse lähtökenttä: ").title()
-
-while True:
-    print(f"\nOlet nyt: {nykyinen_kentta}")
-    print(f"Voit lentää seuraaviin kenttiin: {', '.join(reitit[nykyinen_kentta])}")
-    
-    kohde = input("Valitse minne haluat lentää (tai kirjoita 'lopeta'): ").title()
-    
-    if kohde.lower() == "lopeta":
-        print("Peli päättyy. Kiitos pelaamisesta!")
-        break
-    
-    if kohde in reitit[nykyinen_kentta]:
-        print(f"Lennät {nykyinen_kentta} -> {kohde} ✈️")
-        nykyinen_kentta = kohde
-    else:
-        print("Ei ole suoraa reittiä tähän kenttään. Valitse toinen.")
+elif nimi == "juuso":
+    yhteys = mysql.connector.connect(
+        host='127.0.0.1',
+        port=3306,
+        database='ihmiset',
+        user='dbuser',
+        password='sAL_a3ana',
+        autocommit=True
+    )
