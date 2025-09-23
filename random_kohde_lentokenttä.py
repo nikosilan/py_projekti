@@ -9,14 +9,14 @@ yhteys = mysql.connector.connect(
     autocommit=True
 )
 
-# lista, johon funktio sijoittaa random lentokenttien nimet
+# lista, johon random_kohteet-funktio sijoittaa lentokenttien nimet
 destinations = []
 
 # valitsee sattumanvaraisesti 3 lentokenttää
 def random_kohteet():
 
     for kohde in range(3):
-        sql = f"SELECT name FROM airport ORDER BY RAND() LIMIT 1"
+        sql = f"SELECT name FROM airport ORDER BY RAND() LIMIT 1;"
         kursori = yhteys.cursor()
         kursori.execute(sql)
         tulos = kursori.fetchone()
