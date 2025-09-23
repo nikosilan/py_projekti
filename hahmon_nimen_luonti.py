@@ -8,18 +8,18 @@ yhteys = mysql.connector.connect(
     password='salasana',
     autocommit=True
 )
-# Päivittää käyttäjän antaman nimen game tauluun riville, jonka id = 1. Entinen 'Heini'.
+
 hahmon_id = 1
 hahmon_nimi = input("Nimeä hahmo (pelkkä etumimi/käyttäjänimi): ").strip()
 
-# Nimeää pelihahmon käyttäjän syötteellä. Funktio palauttaa arvon montako riviä tietokantaan päivitettiin
+# Nimeää pelihahmon käyttäjän syötteellä. Funktio palauttaa muutettujen rivien arvon
 def nimea_hahmo(nimi):
     sql = "UPDATE game SET screen_name = %s WHERE id = %s;"
     kursori = yhteys.cursor()
     kursori.execute(sql, (nimi, hahmon_id))
     return kursori.rowcount
 
-# Sijoittaa syötetyn nimen funktioon ja tallentaa päivitettyjen rivien määrän muuttujaan.
+# Sijoittaa nimen funktioon ja tallentaa päivitettyjen rivien määrän muuttujaan.
 tulos = nimea_hahmo(hahmon_nimi)
 
 # Testsaa ja ilmoittaa onnistuiko tietokannan päivitys
