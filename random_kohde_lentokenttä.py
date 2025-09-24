@@ -9,12 +9,23 @@ yhteys = mysql.connector.connect(
             autocommit=True
         )
 
+<<<<<<< HEAD
 # valitsee sattumanvaraisesti 3 isoa lentokenttää ja PALAUTTAA listan
+=======
+# lista, johon random_kohteet-funktio sijoittaa lentokenttien nimet
+destinations = []
+
+# valitsee sattumanvaraisesti 3 isoa lentokenttää
+>>>>>>> 7fae2c234588b61cb9e6a0e6d10b655a492805db
 def random_kohteet():
     destinations = []   
 
     for kohde in range(3):
+<<<<<<< HEAD
         sql = "SELECT name FROM airport WHERE type LIKE 'large_airport' ORDER BY RAND() LIMIT 1;"
+=======
+        sql = (f"SELECT name FROM airport WHERE TYPE like 'large_airport' ORDER BY RAND() LIMIT 1;")
+>>>>>>> 7fae2c234588b61cb9e6a0e6d10b655a492805db
         kursori = yhteys.cursor()
         kursori.execute(sql)
         tulos = kursori.fetchone()
