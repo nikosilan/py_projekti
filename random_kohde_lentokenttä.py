@@ -16,7 +16,8 @@ destinations = []
 def random_kohteet():
 
     for kohde in range(3):
-        sql = f"SELECT name FROM airport ORDER BY RAND() LIMIT 1;"
+        sql = (f"SELECT name FROM airport"
+               f"WhERE TYPE like 'large_airport' ORDER BY RAND() LIMIT 1;")
         kursori = yhteys.cursor()
         kursori.execute(sql)
         tulos = kursori.fetchone()
