@@ -1,6 +1,6 @@
 import random
 
-airpor = "Lontoo"  # lentokenttä
+airport = "Lontoo"  # lentokenttä
 TREASURES = ["€10 seteli", "€20 seteli", "koru", "matkamuisto"]
 
 def airport_event():
@@ -19,5 +19,5 @@ def airport_event():
 #funktion suoritus
 tapahtuma = airport_event()
 
-print(f"Saavuit lentokentälle: {airpor}")
+print(f"Saavuit lentokentälle: {airport}")
 print(f"Tapahtuma: {tapahtuma}")

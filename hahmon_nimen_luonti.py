@@ -1,13 +1,13 @@
 import mysql.connector
 
 yhteys = mysql.connector.connect(
-    host='127.0.0.1',
-    port=3306,
-    database='flight_game',
-    user='Juuso',
-    password='salasana',
-    autocommit=True
-)
+            host='127.0.0.1',
+            port=3306,
+            database='flight_game',
+            user='niko',
+            password='salasana',
+            autocommit=True
+        )
 
 hahmon_id = 1
 hahmon_nimi = input("Nimeä hahmo (pelkkä etumimi/käyttäjänimi): ").strip()
