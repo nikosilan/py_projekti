@@ -26,6 +26,15 @@ def kirjautuminen():
                 password='salasana',
                 autocommit=True
             )
+        elif nimi.lower() == "daniel":
+            yhteys = mysql.connector.connect(
+                host='127.0.0.1',
+                port=3306,
+                database='flight_game',
+                user='Daniel',
+                password='DA10',
+                autocommit=True
+            )
 
         elif nimi.lower() == "illia":
             yhteys = mysql.connector.connect(
