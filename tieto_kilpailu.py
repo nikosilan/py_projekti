@@ -1,19 +1,19 @@
 import random
 import math
 
-tietopankki = {"Kuinka monta maanosaa maailmassa on?":"7",
-               "Mikä on maailman suurin valtameri?":"Tyynimeri",
-               "Mikä on veden kemiallinen kaava?":"H2O"}
+# Oletetaan, että se on rahatili, haasteiden toteuttaessa saadaan palkan
+pisteet = 0
 
-pisteet = 0  # oletetaan että se on palkka
+# Funktio, joka ajaa pelin
+def tietokilpailu_peli(pisteet):
+    tietopankki = {"Kuinka monta maanosaa maailmassa on?": "7",
+                   "Mikä on maailman suurin valtameri?": "Tyynimeri",
+                   "Mikä on veden kemiallinen kaava?": "H2O"}
 
-def tietokilpailu_peli(tietopankki, pisteet):
     kysymykset = list(tietopankki.items())
 
-    for _ in range(3):
+    for _ in range(1):
         for index in range(len(kysymykset)):
-            random_index = random.randint(0, len(kysymykset) - 1)
-            kysymys, oikea_vastaus = kysymykset[random_index]
             for kysymys, oikea_vastaus in kysymykset:
                 print(kysymys)
                 pelaajan_vastaus = input("Anna vastaus: ").strip()
@@ -24,10 +24,14 @@ def tietokilpailu_peli(tietopankki, pisteet):
                 else:
                     print("Valitettavasti et päässyt läpi ja et ansainnut senttiäkään!")
                     break
+            else:
+                break
+        else:
+            break
 
     print(f"\nPelin lopussa sinulla on yhteensä {pisteet} pistettä.")
 
     return pisteet # saatu palkka
 
-tietokilpailu_peli(tietopankki, pisteet)
+tietokilpailu_peli(pisteet)
 # korjata 3 satunnaista määrää kysymystä, se toistuu enemmän
