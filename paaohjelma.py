@@ -49,6 +49,9 @@ pisteet = 0
 pisteet = tietokilpailu_peli(pisteet)
 print(f"Uudet pisteet pääohjelmassa: {pisteet}")
 
+
+
+#arvo kolme kenttää
 tulosta_numeroitu_lista(kohteet)
 
 
