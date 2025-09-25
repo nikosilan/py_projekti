@@ -25,6 +25,7 @@ def raha_saldo():
     return print(tulos)
 
 
+
 # kysyy paljon rahaa lisätään tilille. Myöhemmin tapahtuu proseduraalisesti.
 raha_määrä = int(input("syötä rahan määrä: "))
 raha_muutos(raha_määrä)
