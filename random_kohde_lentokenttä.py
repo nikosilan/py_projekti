@@ -1,38 +1,37 @@
-import mysql.connector
-
-yhteys = mysql.connector.connect(
-    host='127.0.0.1',
-    port=3306,
-    database='flight_game',
-    user='niko',
-    password='salasana',
-    autocommit=True
-)
-
 # valitsee sattumanvaraisesti 3 isoa lentokenttää ja PALAUTTAA listan
-def random_kohteet():
-    destinations = []   
+def random_kohteet(yhteys):
+    destinations = []
 
     for kohde in range(3):
-        sql = "SELECT name FROM airport WHERE type LIKE 'large_airport' ORDER BY RAND() LIMIT 1;"
+        sql = ('SELECT airport.name, country.name '
+               'FROM airport '
+               'INNER JOIN country ON airport.iso_country = country.iso_country '
+               'WHERE country.continent = "EU" '
+               'AND TYPE like "large_airport" ORDER BY RAND() LIMIT 1;')
+
+        '''sql = "SELECT name FROM airport WHERE type LIKE 'large_airport' ORDER BY RAND() LIMIT 1;"'''
+        # vanha pyyntö tietokannasta
+
         kursori = yhteys.cursor()
         kursori.execute(sql)
         tulos = kursori.fetchone()
 
         # purkaa tuplen ja lisää kenttien nimet listaan destinations
-        lentokentan_nimi = tulos[0]
-        destinations.append(lentokentan_nimi)
+        if tulos:
+            lentokentan_nimi = tulos[0]
+            maan_nimi = tulos[1]
+            destinations.append((lentokentan_nimi, maan_nimi))
 
     return destinations  # palautetaan lista
 
 
 # tulostaa listan nätisti numeroituna
 def tulosta_numeroitu_lista(lista):
-    for indeksi, alkio in enumerate(lista, start=1):
-        print(f"{indeksi}. {alkio}")
+    for indeksi, (alkio, maanimi) in enumerate(lista, start=1):
+        print(f"{indeksi}. {alkio} in {maanimi}")
     return
 
 
 # pääohjelma
-kohteet = random_kohteet()      # otetaan vastaan palautettu lista
-tulosta_numeroitu_lista(kohteet)
+# kohteet = random_kohteet()      # otetaan vastaan palautettu lista
+# tulosta_numeroitu_lista(kohteet)

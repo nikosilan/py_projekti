@@ -4,10 +4,10 @@ from random_kohde_lentokenttä import tulosta_numeroitu_lista
 
 
 #yhdistäminen tietokantaan
-kirjautuminen()
+yhteys = kirjautuminen()
 
 # valitsee sattumanvaraisesti 3 isoa lentokenttää ja PALAUTTAA listan
-random_kohteet()
+kohteet = random_kohteet(yhteys)
 
 # tulostaa listan nätisti numeroituna
-tulosta_numeroitu_lista()
+tulosta_numeroitu_lista(kohteet)
