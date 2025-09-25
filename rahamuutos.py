@@ -28,7 +28,7 @@ def raha_saldo():
 '''rahaa_tilillä = raha_saldo()'''
 
 
-# kysyy paljon rahaa lisätään tilille. Myöhemmin tapahtuu proseduraalisesti.
+# Kysyy paljon rahaa lisätään tilille (tai otetaan pois). Myöhemmin tämä tapahtuu proseduraalisesti.
 raha_määrä = int(input("syötä rahan määrä: "))
 raha_muutos(raha_määrä)
 raha_saldo()
