@@ -1,16 +1,13 @@
 import mysql.connector
 
-
 yhteys = mysql.connector.connect(
     host='127.0.0.1',
     port=3306,
     database='flight_game',
-    user='Daniel',
-    password='DA10',
+    user='Juuso',
+    password='salasana',
     autocommit=True
 )
-
-
 
 
 def bensa_muutos(bensa_määrä):
