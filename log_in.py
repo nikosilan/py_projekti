@@ -17,8 +17,6 @@ def kirjautuminen():
                 password='salasana',
                 autocommit=True
             )
-            user = "niko"
-            salasana = "salasana"
 
 
         elif nimi.lower() == "juuso":
