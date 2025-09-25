@@ -1,16 +1,5 @@
-import mysql.connector
-
-yhteys = mysql.connector.connect(
-    host='127.0.0.1',
-    port=3306,
-    database='flight_game',
-    user='niko',
-    password='salasana',
-    autocommit=True
-)
-
 # valitsee sattumanvaraisesti 3 isoa lentokenttää ja PALAUTTAA listan
-def random_kohteet():
+def random_kohteet(yhteys):
     destinations = []   
 
     for kohde in range(3):
@@ -34,5 +23,5 @@ def tulosta_numeroitu_lista(lista):
 
 
 # pääohjelma
-kohteet = random_kohteet()      # otetaan vastaan palautettu lista
-tulosta_numeroitu_lista(kohteet)
+# kohteet = random_kohteet()      # otetaan vastaan palautettu lista
+# tulosta_numeroitu_lista(kohteet)
