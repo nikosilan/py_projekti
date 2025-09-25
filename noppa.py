@@ -28,7 +28,7 @@ def noppa_peli(pisteet):
 
 def main():
     pisteet = 0
-    pisteet = noppa_peli(pisteet)
+    pisteet += noppa_peli(pisteet)
     print(f"Lopulliset pisteet: {pisteet}")
 
 if __name__ == "__main__":
