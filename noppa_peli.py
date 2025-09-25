@@ -27,7 +27,7 @@ def noppa_peli(pisteet):
         print(tulos)
     else:
         print("Väärin komento, yritä uudelleen.")
-    return
+    return pisteet
 
 def main():
     noppa_peli(pisteet)
