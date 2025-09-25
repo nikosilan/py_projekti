@@ -1,0 +1,33 @@
+Index: aarteet.py
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/aarteet.py b/aarteet.py
+new file mode 100644
+--- /dev/null	(date 1758619568598)
++++ b/aarteet.py	(date 1758619568598)
+@@ -0,0 +1,23 @@
++import random
++
++airpor = "Lontoo"  # lentokenttä
++TREASURES = ["€10 seteli", "€20 seteli", "koru", "matkamuisto"]
++
++def airport_event():
++    treasure_chance = 0.15  # 15% mahdollisuus löytää aarre
++    robbed_chance = 0.10    # 10% mahdollisuus tulla ryöstetyksi
++
++    roll = random.random()
++    if roll < treasure_chance:
++        item = random.choice(TREASURES)
++        return f"Löysit aarteen: {item}!"
++    elif roll < treasure_chance + robbed_chance:
++        return "Ryöstö! Menetit jotain arvokasta."
++    else:
++        return "Ei tapahtumaa."
++
++#funktion suoritus
++tapahtuma = airport_event()
++
++print(f"Saavuit lentokentälle: {airpor}")
++print(f"Tapahtuma: {tapahtuma}")
