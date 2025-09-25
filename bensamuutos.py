@@ -10,14 +10,32 @@ yhteys = mysql.connector.connect(
     autocommit=True
 )
 
-def pelaaja_haku_bensa(pelaaja):
-    sql = f"SELECT bensa FROM game WHERE screen_name = '{pelaaja}'"
+
+
+
+def bensa_muutos(bensa_määrä):
+
+    sql = "UPDATE game SET bensa = %s WHERE id = 1"
+    kursori = yhteys.cursor()
+    kursori.execute(sql, (bensa_määrä,))
+    yhteys.commit()
+    print("Fuel updated successfully.")
+
+
+#bensa_määrä = float(input("How much fuel: "))
+#bensa_muutos(bensa_määrä)
+
+
+#tulosta_numeroitu_lista()
+def tankissa_bensa():
+    sql = "SELECT bensa FROM game WHERE id = 1;"
     kursori = yhteys.cursor()
     kursori.execute(sql)
     tulos = kursori.fetchone()
+    if tulos:
+        print(tulos[0])
+    else:
+        print("No data found")
+tankissa_bensa()
 
-    return print(tulos)
 
-
-pelaaja_nimi = input("Enter player's screen name: ").strip()
-pelaaja_haku_bensa(pelaaja_nimi)
