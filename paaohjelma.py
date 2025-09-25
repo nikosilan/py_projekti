@@ -7,10 +7,24 @@ from noppa import noppa_peli
 
 from tieto_kilpailu import tietokilpailu_peli
 
-
+from hahmon_nimen_luonti import nimea_hahmo
 
 #yhdistäminen tietokantaan
 yhteys = kirjautuminen()
+
+
+#hahmon nimen luonti
+
+if yhteys:
+    hahmon_nimi = input("Nimeä hahmo (pelkkä etunimi/käyttäjänimi): ").strip()
+    tulos = nimea_hahmo(yhteys, hahmon_nimi)
+
+    if tulos == 1:
+        print(f"Hahmosi nimi on: {hahmon_nimi}")
+    else:
+        print("Nimen päivitys ei onnistunut.")
+
+        
 
 # valitsee sattumanvaraisesti 3 isoa lentokenttää ja PALAUTTAA listan
 kohteet = random_kohteet(yhteys)
@@ -36,4 +50,8 @@ pisteet = tietokilpailu_peli(pisteet)
 print(f"Uudet pisteet pääohjelmassa: {pisteet}")
 
 tulosta_numeroitu_lista(kohteet)
+
+
+
+
 
