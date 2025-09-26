@@ -10,6 +10,7 @@ yhteys = mysql.connector.connect(
     autocommit=True
 )
 
+# Funktion nimi pitää muuttaa kuvaavammaksi!
 def pelaaja_haku_bensa(bensa_muutos):
     MAX_BENSA = 240000  # Max fuel
     MIN_BENSA = 0        # Min fuel
