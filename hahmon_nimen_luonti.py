@@ -1,29 +1,17 @@
-import mysql.connector
+# hahmo.py
+def nimea_hahmo(yhteys, nimi, hahmo_id=1):
+    """
+    Nimeää pelihahmon tietokantaan annetulla yhteydellä.
+    Katkaisee nimen, jos se on liian pitkä sarakkeelle screen_name.
+    Palauttaa päivitettyjen rivien määrän.
+    """
+    max_pituus = 20  # riippuu tietokannan screen_name-sarakkeesta
+    if len(nimi) > max_pituus:
+        print(f"Nimi on liian pitkä, se katkaistaan {max_pituus} merkkiin.")
+        nimi = nimi[:max_pituus]
 
-yhteys = mysql.connector.connect(
-            host='127.0.0.1',
-            port=3306,
-            database='flight_game',
-            user='niko',
-            password='salasana',
-            autocommit=True
-        )
-
-hahmon_id = 1
-hahmon_nimi = input("Nimeä hahmo (pelkkä etumimi/käyttäjänimi): ").strip()
-
-# Nimeää pelihahmon käyttäjän syötteellä. Funktio palauttaa muutettujen rivien arvon
-def nimea_hahmo(nimi):
     sql = "UPDATE game SET screen_name = %s WHERE id = %s;"
     kursori = yhteys.cursor()
-    kursori.execute(sql, (nimi, hahmon_id))
+    kursori.execute(sql, (nimi, hahmo_id))
+    yhteys.commit()
     return kursori.rowcount
-
-# Sijoittaa nimen funktioon ja tallentaa päivitettyjen rivien määrän muuttujaan.
-tulos = nimea_hahmo(hahmon_nimi)
-
-# Testsaa ja ilmoittaa onnistuiko tietokannan päivitys
-if tulos == 1:
-    print(f"Hahmosi nimi on: {hahmon_nimi}")
-else:
-    print("Nimen päivitys ei onnistunut.")

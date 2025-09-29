@@ -11,7 +11,7 @@ yhteys = mysql.connector.connect(
 
 # päivittää rahasaldoa tietokantaan
 def raha_muutos(raha_muutos):
-    sql = "UPDATE game SET raha = %s WHERE id = %s;"
+    sql = "UPDATE game SET raha = raha + %s WHERE id = %s;"
     kursori = yhteys.cursor()
     kursori.execute(sql, (raha_muutos, 1))
     return kursori.rowcount
@@ -22,11 +22,13 @@ def raha_saldo():
     kursori = yhteys.cursor()
     kursori.execute(sql)
     tulos = kursori.fetchone()
-    return print(tulos)
+    return print(tulos[0])
+
+# globaali muuttuja 'raha'
+'''rahaa_tilillä = raha_saldo()'''
 
 
-
-# kysyy paljon rahaa lisätään tilille. Myöhemmin tapahtuu proseduraalisesti.
+# Kysyy paljon rahaa lisätään tilille (tai otetaan pois). Myöhemmin tämä tapahtuu proseduraalisesti.
 raha_määrä = int(input("syötä rahan määrä: "))
 raha_muutos(raha_määrä)
 raha_saldo()
