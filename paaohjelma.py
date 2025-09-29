@@ -10,7 +10,8 @@ from tieto_kilpailu import tietokilpailu_peli
 from hahmon_nimen_luonti import nimea_hahmo
 from lataus import palkki
 
-
+from rahamuutos import raha_saldo
+from rahamuutos import raha_muutos
 
 #yhdistäminen tietokantaan
 yhteys = kirjautuminen()
@@ -29,8 +30,14 @@ if yhteys:
     else:
         print("Nimen päivitys ei onnistunut.")
 
-        
+      
 while True:
+        #rahamäärä
+        raha_määrä = int(input("syötä rahan määrä: "))
+        raha_muutos(raha_määrä)
+        raha_saldo()
+
+
         
         # valitsee sattumanvaraisesti 3 isoa lentokenttää ja PALAUTTAA listan
         kohteet = random_kohteet(yhteys)
