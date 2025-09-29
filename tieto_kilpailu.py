@@ -1,25 +1,33 @@
-
+#tietokilpailu peli
 import random
+
+pisteet = 0
 
 def tietokilpailu_peli(pisteet):
     tietopankki = {
         "Kuinka monta maanosaa maailmassa on?": "7",
         "Mikä on maailman suurin valtameri?": "Tyynimeri",
-        "Mikä on veden kemiallinen kaava?": "H2O"
+        "Mikä on veden kemiallinen kaava?": "H2O",
+        "Mikä on Suomen pääkaupunki?": "Helsinki",
+        "Mikä planeetta tunnetaan punaisena planeettana?": "Mars",
+        "Kuka maalasi Mona Lisan?": "Leonardo da Vinci",
+        "Mikä on maailman korkein vuori?": "Mount Everest",
+        "Mikä on maailman nopein maaeläin?": "Gepardi",
+        "Mikä kieli on eniten puhuttu maailmassa?": "Mandariinikiina"
     }
 
     kysymykset = list(tietopankki.items())
     
     # Valitaan 3 satunnaista kysymystä
-    satunnaiset_kysymykset = random.sample(kysymykset, k=min(3, len(kysymykset)))
+    satunnaiset_kysymykset = random.sample(kysymykset, 3)
 
     for kysymys, oikea_vastaus in satunnaiset_kysymykset:
         print(kysymys)
         pelaajan_vastaus = input("Anna vastaus: ").strip()
         if pelaajan_vastaus.lower() == oikea_vastaus.lower():
-            random_piste_määrä = random.randint(1, 10)
-            print(f"Onnea! Vastasit oikein ja ansaitset {random_piste_määrä} pistettä.")
-            pisteet += random_piste_määrä
+            random_piste_maara = random.randint(1, 10)
+            print(f"Onnea! Vastasit oikein ja ansaitset {random_piste_maara} pistettä.")
+            pisteet += random_piste_maara
         else:
             print("Valitettavasti et päässyt läpi ja et ansainnut senttiäkään!")
             break
@@ -27,4 +35,5 @@ def tietokilpailu_peli(pisteet):
     print(f"\nPelin lopussa sinulla on yhteensä {pisteet} pistettä.")
     return pisteet
 
-
+# Pääohjelmaan
+# tietokilpailu_peli(pisteet)
