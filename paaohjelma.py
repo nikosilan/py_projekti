@@ -8,10 +8,13 @@ from noppa import noppa_peli
 from tieto_kilpailu import tietokilpailu_peli
 
 from hahmon_nimen_luonti import nimea_hahmo
+from lataus import palkki
 
 #yhdistäminen tietokantaan
 yhteys = kirjautuminen()
 
+#lataus palkki
+palkki()
 
 #hahmon nimen luonti
 
