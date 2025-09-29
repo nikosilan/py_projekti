@@ -1,5 +1,5 @@
 flight_count = 0
-continents_sql_list = ["EU"] # Alussa on vain Eurooppa
+continents_sql_list = ["EU"] # Alussa on vain Eurooppa, sitten tähän lisätään muita
 
 def hae_avatut_maanosat(flight_count):
     # Määritellään maanosia, jotka avautuvat lentojen määrän mukaan

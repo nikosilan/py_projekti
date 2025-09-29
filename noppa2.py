@@ -1,5 +1,5 @@
+# noppa_peli
 import random
-
 
 def noppa_peli(pisteet):
     tietokone_noppa1 = random.randint(1, 6)
