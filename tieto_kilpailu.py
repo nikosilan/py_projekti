@@ -5,7 +5,13 @@ def tietokilpailu_peli(pisteet):
     tietopankki = {
         "Kuinka monta maanosaa maailmassa on?": "7",
         "Mikä on maailman suurin valtameri?": "Tyynimeri",
-        "Mikä on veden kemiallinen kaava?": "H2O"
+        "Mikä on veden kemiallinen kaava?": "H2O",
+        "Minkä komediaryhmän mukaan Python-ohjelma on nimetty?" : "Monty Python",
+        "Mikä eläin pyton on?": "käärme",
+        "Kumpi on tilastollisesti turvallisempi matkustamisen muoto, lentäminen vai autolla ajaminen?": "lentäminen",
+        "Millä sanalla Pythonissa aloitetaan ehtolause?": "if",
+        "Missä kaupungissa sijaitsee Eiffel-torni?": "ranska",
+        "Minkä maan pääkaupunki on Oslo?": "norja"
     }
 
     kysymykset = list(tietopankki.items())
