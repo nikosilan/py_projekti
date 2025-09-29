@@ -1,13 +1,14 @@
 import mysql.connector
 
 yhteys = mysql.connector.connect(
-    host='127.0.0.1',
-    port=3306,
-    database='flight_game',
-    user='Juuso',
-    password='salasana',
-    autocommit=True
-)
+                host='127.0.0.1',
+                port=3306,
+                database='flight_game',
+                user='niko',
+                password='salasana',
+                autocommit=True
+            )
+
 
 # päivittää rahasaldoa tietokantaan
 def raha_muutos(raha_muutos):
@@ -29,6 +30,5 @@ def raha_saldo():
 
 
 # Kysyy paljon rahaa lisätään tilille (tai otetaan pois). Myöhemmin tämä tapahtuu proseduraalisesti.
-raha_määrä = int(input("syötä rahan määrä: "))
-raha_muutos(raha_määrä)
-raha_saldo()
+
+
