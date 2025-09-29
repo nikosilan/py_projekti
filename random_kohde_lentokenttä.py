@@ -1,13 +1,23 @@
+flight_count = 0
+continents_sql_list = ["EU"] # Alussa on vain Eurooppa
+
+def hae_avatut_maanosat(flight_count):
+    # Määritellään maanosia, jotka avautuvat lentojen määrän mukaan
+    maanosat_jarjestys = ["EU", "NA", "SA", "AS", "OC", "AF", "AN"]  # Europe, North America, South America, etc.
+    # Palauttaa listan maanosista, jotka ovat tähän mennessä avautuneet
+    avattujen_maara = min((flight_count // 5) + 1, len(maanosat_jarjestys))
+    return maanosat_jarjestys[:avattujen_maara]
+
 # valitsee sattumanvaraisesti 3 isoa lentokenttää ja PALAUTTAA listan
 def random_kohteet(yhteys):
     destinations = []
 
     for kohde in range(3):
-        sql = ('SELECT airport.name, country.name '
-               'FROM airport '
-               'INNER JOIN country ON airport.iso_country = country.iso_country '
-               'WHERE country.continent = "EU" '
-               'AND TYPE like "large_airport" ORDER BY RAND() LIMIT 1;')
+        sql = (f'SELECT airport.name, country.name '
+               f'FROM airport '
+               f'INNER JOIN country ON airport.iso_country = country.iso_country '
+               f'WHERE country.continent IN ("{continents_sql_list}")'
+               f'AND TYPE like "large_airport" ORDER BY RAND() LIMIT 1;')
 
         '''sql = "SELECT name FROM airport WHERE type LIKE 'large_airport' ORDER BY RAND() LIMIT 1;"'''
         # vanha pyyntö tietokannasta
@@ -31,6 +41,8 @@ def tulosta_numeroitu_lista(lista):
         print(f"{indeksi}. {alkio} in {maanimi}")
     return
 
+avatut_maanosat = hae_avatut_maanosat(flight_count)
+continents_sql_list.append(avatut_maanosat)
 
 # pääohjelma
 # kohteet = random_kohteet()      # otetaan vastaan palautettu lista
