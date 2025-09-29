@@ -13,7 +13,13 @@ def tietokilpailu_peli(pisteet):
         "Kuka maalasi Mona Lisan?": "Leonardo da Vinci",
         "Mikä on maailman korkein vuori?": "Mount Everest",
         "Mikä on maailman nopein maaeläin?": "Gepardi",
-        "Mikä kieli on eniten puhuttu maailmassa?": "Mandariinikiina"
+        "Mikä kieli on eniten puhuttu maailmassa?": "Mandariinikiina",
+        "Minkä komediaryhmän mukaan Python-ohjelma on nimetty?" : "Monty Python",
+        "Mikä eläin pyton on?": "käärme",
+        "Kumpi on tilastollisesti turvallisempi matkustamisen muoto, lentäminen vai autolla ajaminen?": "lentäminen",
+        "Millä sanalla Pythonissa aloitetaan ehtolause?": "if",
+        "Missä kaupungissa sijaitsee Eiffel-torni?": "ranska",
+        "Minkä maan pääkaupunki on Oslo?": "norja"
     }
 
     kysymykset = list(tietopankki.items())
