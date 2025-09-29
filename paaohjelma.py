@@ -11,6 +11,7 @@ from hahmon_nimen_luonti import nimea_hahmo
 from lataus import palkki
 
 
+
 #yhdistäminen tietokantaan
 yhteys = kirjautuminen()
 
@@ -30,7 +31,7 @@ if yhteys:
 
         
 while True:
-        raha = 100  
+        
         # valitsee sattumanvaraisesti 3 isoa lentokenttää ja PALAUTTAA listan
         kohteet = random_kohteet(yhteys)
 
@@ -47,6 +48,8 @@ while True:
             if valinta in [0, 1, 2]:
                 sana = kohteet[valinta]   # tallennetaan valittu kohde
                 print("Valitsit kohteen:", sana)
+               
+                
             else:
                 print("Virheellinen numero (valitse 1, 2 tai 3).")
         except ValueError:
