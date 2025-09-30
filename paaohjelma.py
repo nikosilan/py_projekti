@@ -7,11 +7,13 @@ from noppa import noppa_peli
 
 from tieto_kilpailu import tietokilpailu_peli
 
-from hahmon_nimen_luonti import nimea_hahmo
+
 from lataus import palkki
 
 from rahamuutos import raha_saldo
 from rahamuutos import raha_muutos
+
+from hahmon_luonti import nimea_hahmo
 
 #yhdistäminen tietokantaan
 yhteys = kirjautuminen()
@@ -21,25 +23,22 @@ yhteys = kirjautuminen()
 
 #hahmon nimen luonti
 
-if yhteys:
-    hahmon_nimi = input("Nimeä hahmo (pelkkä etunimi/käyttäjänimi): ").strip()
-    tulos = nimea_hahmo(yhteys, hahmon_nimi)
+#   Tämä voi laittaa pääohjelmaan
+nimi = input("Syötä oma nimi: ")
+nimea_hahmo(yhteys, nimi)
 
-    if tulos == 1:
-        print(f"Hahmosi nimi on: {hahmon_nimi}")
-    else:
-        print("Nimen päivitys ei onnistunut.")
+
 
       
 while True:
         #rahamäärä
-        raha_määrä = int(input("syötä rahan määrä: "))
-        raha_muutos(raha_määrä)
+        #raha_määrä = int(input("syötä rahan määrä: "))
+        #raha_muutos(raha_määrä)
         raha_saldo()
 
 
         
-        # valitsee sattumanvaraisesti 3 isoa lentokenttää ja PALAUTTAA listan
+        #valitsee sattumanvaraisesti 3 isoa lentokenttää ja PALAUTTAA listan
         kohteet = random_kohteet(yhteys)
 
 
