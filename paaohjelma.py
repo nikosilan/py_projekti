@@ -1,5 +1,6 @@
 from log_in import kirjautuminen
 from random_kohde_lentokenttä import random_kohteet
+from random_kohde_lentokenttä import hae_avatut_maanosat
 from random_kohde_lentokenttä import tulosta_numeroitu_lista
 
 
@@ -26,10 +27,18 @@ yhteys = kirjautuminen()
 #   Tämä voi laittaa pääohjelmaan
 nimi = input("Syötä oma nimi: ")
 nimea_hahmo(yhteys, nimi)
+'''flight_count = 0 # Lennot määrä, käytetään sitten maanosien aukeamisessa
+continents_sql_list = [] # Alussa on vain Eurooppa, sitten tähän lisätään muita
 
+avatut_maanosat = hae_avatut_maanosat(flight_count)
+continents_sql_list.extend(avatut_maanosat)
 
+print("Avatut maanosat:", ", ".join(continents_sql_list))
 
-      
+kohteet = random_kohteet(yhteys)      # otetaan vastaan palautettu lista
+tulosta_numeroitu_lista(kohteet)'''
+
+'''      
 while True:
         #rahamäärä
         #raha_määrä = int(input("syötä rahan määrä: "))
@@ -79,6 +88,6 @@ while True:
 
         #arvo kolme kenttää
         #tulosta_numeroitu_lista(kohteet)'
-
+'''
 
 
