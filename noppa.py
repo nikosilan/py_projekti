@@ -13,8 +13,8 @@ yhteys = mysql.connector.connect(
 
 
 def noppa_peli(pisteet):
-    tietokone_noppa1 = random.randint(1, 1)
-    tietokone_noppa2 = random.randint(1, 1)
+    tietokone_noppa1 = random.randint(1, 6)
+    tietokone_noppa2 = random.randint(1, 6)
 
     print(f"Tietokone heitti: {tietokone_noppa1} ja {tietokone_noppa2}")
 
@@ -22,8 +22,8 @@ def noppa_peli(pisteet):
         syote = input("Haluatko heittää noppia? (y/n): ").lower()
 
         if syote == "y":
-            pelaaja_noppa1 = random.randint(1, 1)
-            pelaaja_noppa2 = random.randint(1, 1)
+            pelaaja_noppa1 = random.randint(1, 6)
+            pelaaja_noppa2 = random.randint(1, 6)
 
             print(f"Sinun heittosi: {pelaaja_noppa1} ja {pelaaja_noppa2}")
 
