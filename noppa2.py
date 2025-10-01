@@ -1,5 +1,19 @@
 # noppa_peli
 import random
+#from log_in import kirjautuminen
+#yhteys = kirjautuminen()
+
+
+def get_raha(yhteys, hahmo_id=1):
+    cursor = yhteys.cursor()
+
+    sql = "SELECT raha FROM game WHERE id = %s"
+    cursor.execute(sql, (hahmo_id,))
+    result = cursor.fetchone()
+    cursor.close()
+    pisteet = result[0]
+
+    return pisteet
 
 def noppa_peli(pisteet):
     tietokone_noppa1 = random.randint(1, 6)
@@ -16,7 +30,8 @@ def noppa_peli(pisteet):
 
             print(f"Sinun heittosi: {pelaaja_noppa1} ja {pelaaja_noppa2}")
 
-            if (pelaaja_noppa1, pelaaja_noppa2) == (tietokone_noppa1, tietokone_noppa2):
+            if ((pelaaja_noppa1, pelaaja_noppa2) == (tietokone_noppa1, tietokone_noppa2)
+                    or (pelaaja_noppa2, pelaaja_noppa1) == (tietokone_noppa1, tietokone_noppa2)):
                 palkinto = random.randint(1, 100)
                 print(f"Onnittelut! Heitot täsmäsivät, saat {palkinto} pistettä!")
                 pisteet += palkinto
@@ -30,12 +45,20 @@ def noppa_peli(pisteet):
         else:
             print("Väärä syöte, anna 'y' tai 'n'.")
 
+def update_raha(pisteet, yhteys, hahmo_id=1):
+    cursor = yhteys.cursor()
 
-def main():
-    pisteet = 0
-    pisteet = noppa_peli(pisteet)
-    print(f"Lopulliset pisteet: {pisteet}")
+    sql = "UPDATE game SET raha = raha + %s WHERE id = %s"
+    cursor.execute(sql, (pisteet, hahmo_id))
+    yhteys.commit()
+    cursor.close()
 
 
-if __name__ == "__main__":
-    main()
+#   Pääohjelmaan alkuun
+# from noppa2 import get_raha, noppa_peli, update_raha
+
+#   Pääohjelmaan kun halutaan ajaa noppa_pelin
+# pisteet = get_raha(yhteys)
+# pisteet = noppa_peli(pisteet)
+# update_raha(pisteet, yhteys)
+# print(f"Sinulla on nyt {pisteet}€.")
