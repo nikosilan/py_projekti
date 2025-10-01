@@ -28,10 +28,12 @@ continents_sql_list = [] # Alussa on vain Eurooppa, sitten tähän lisätään m
 #lataus palkki
 palkki()
 
+#hahmon nimen luonti
+nimi = input("Syötä oma nimi: ")
+nimea_hahmo(yhteys, nimi)
+
 while True:
-    #hahmon nimen luonti
-    nimi = input("Syötä oma nimi: ")
-    nimea_hahmo(yhteys, nimi)
+
 
 
     peli(yhteys)
