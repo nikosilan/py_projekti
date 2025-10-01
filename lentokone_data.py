@@ -2,14 +2,7 @@ from geopy.distance import geodesic
 import mysql.connector
 
 
-yhteys = mysql.connector.connect(
-    host='127.0.0.1',
-    port=3306,
-    database='flight_game',
-    user='Daniel',
-    password='DA10',
-    autocommit=True
-)
+
 
 # --- Only ONE aircraft ---
 aircraft = "Boeing 737"
@@ -147,4 +140,4 @@ def peli(yhteys):
             print("Enter a number (1-3) or q to quit.")
 
 # Start Game
-peli(yhteys)
+

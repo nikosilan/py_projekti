@@ -13,12 +13,14 @@ from rahamuutos import raha_muutos
 
 from hahmon_luonti import nimea_hahmo
 
+from lentokone_data import peli
+
 # Kaikki muuttujat tähän
 #yhdistäminen tietokantaan
 yhteys = kirjautuminen()
 flight_count = 0 # Lennot määrä, käytetään sitten maanosien aukeamisessa
 continents_sql_list = [] # Alussa on vain Eurooppa, sitten tähän lisätään muita
-
+peli(yhteys)
 #lataus palkki
 #palkki()
 
