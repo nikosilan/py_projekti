@@ -1,35 +1,41 @@
-# noppa.py
+# noppa_peli
 import random
 
 def noppa_peli(pisteet):
-    syote = input("Haluatko heittää noppia nyt? (Y/n): ")
+    tietokone_noppa1 = random.randint(1, 6)
+    tietokone_noppa2 = random.randint(1, 6)
 
-    random_num = int(random.randint(1, 6))
-    tietokoneen_vastaava_silmäluku = (random_num, random_num)
+    print(f"Tietokone heitti: {tietokone_noppa1} ja {tietokone_noppa2}")
 
-    if syote.lower() == "y":
-        p_noppa_1, p_noppa_2 = (random_num, random_num)
-        tulos_t = f'Tietokone heitti {tietokoneen_vastaava_silmäluku[0]} ja {tietokoneen_vastaava_silmäluku[1]}'
-        tulos_p = f'Heitetty {p_noppa_1} ja {p_noppa_2}'
+    while True:
+        syote = input("Haluatko heittää noppia? (y/n): ").lower()
 
-        print(tulos_t)
-        print(tulos_p)
+        if syote == "y":
+            pelaaja_noppa1 = random.randint(1, 6)
+            pelaaja_noppa2 = random.randint(1, 6)
 
-        if tietokoneen_vastaava_silmäluku == (p_noppa_1, p_noppa_2):
-            palkinto = int(random.randint(1,100))
-            print(f"Olet voittanut timantin, sinulle myönnetään {palkinto}")
-            pisteet += palkinto
-    elif syote.lower() == "n":
-        print("Et halua heitä noppia, olet poistunut tehtävästä.")
-    else:
-        print("Väärin komento, yritä uudelleen.")
+            print(f"Sinun heittosi: {pelaaja_noppa1} ja {pelaaja_noppa2}")
 
-    return pisteet  # Palautetaan päivitetyt pisteet
+            if (pelaaja_noppa1, pelaaja_noppa2) == (tietokone_noppa1, tietokone_noppa2):
+                palkinto = random.randint(1, 100)
+                print(f"Onnittelut! Heitot täsmäsivät, saat {palkinto} pistettä!")
+                pisteet += palkinto
+                return pisteet
+            else:
+                print("Heitot eivät täsmänneet, ei pisteitä.")
+
+        elif syote == "n":
+            print("Et halunnut heittää noppia, peli päättyi.")
+            return pisteet
+        else:
+            print("Väärä syöte, anna 'y' tai 'n'.")
+
 
 def main():
     pisteet = 0
-    pisteet += noppa_peli(pisteet)
+    pisteet = noppa_peli(pisteet)
     print(f"Lopulliset pisteet: {pisteet}")
+
 
 if __name__ == "__main__":
     main()

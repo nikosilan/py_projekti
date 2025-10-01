@@ -1,9 +1,9 @@
 from log_in import kirjautuminen
-from random_kohde_lentokenttä import random_kohteet
-from random_kohde_lentokenttä import hae_avatut_maanosat
-from random_kohde_lentokenttä import tulosta_numeroitu_lista
+#from random_kohde_lentokenttä import random_kohteet
+#from random_kohde_lentokenttä import hae_avatut_maanosat
+#from random_kohde_lentokenttä import tulosta_numeroitu_lista
 
-from noppa import noppa_peli
+#from noppa import noppa_peli
 from tieto_kilpailu import tietokilpailu_peli
 
 from lataus import palkki
@@ -13,34 +13,51 @@ from rahamuutos import raha_muutos
 
 from hahmon_luonti import nimea_hahmo
 
-from lentokone_data import peli
+#from lentokone_data import peli
+
+from aircraft_game import peli
+
+from noppa import noppa_peli
 
 # Kaikki muuttujat tähän
 #yhdistäminen tietokantaan
 yhteys = kirjautuminen()
 flight_count = 0 # Lennot määrä, käytetään sitten maanosien aukeamisessa
 continents_sql_list = [] # Alussa on vain Eurooppa, sitten tähän lisätään muita
-peli(yhteys)
-#lataus palkki
-#palkki()
 
-#hahmon nimen luonti
+#lataus palkki
+palkki()
+
+while True:
+    #hahmon nimen luonti
+    nimi = input("Syötä oma nimi: ")
+    nimea_hahmo(yhteys, nimi)
+
+
+    peli(yhteys)
+
+    #tietokilpailu
+    pisteet = 0
+    pisteet = tietokilpailu_peli(pisteet)
+    print(f"Uudet pisteet pääohjelmassa: {pisteet}")
+
+    #noppapeli
+    pisteet = 10  # aloitetaan esimerkiksi 10 pisteestä
+    pisteet = noppa_peli(pisteet)
+    print(f"Uudet pisteet: {pisteet}")
 ''' 
 Hei, tehdäänkö meidän alkupiste Suomesta? (Helsinki-Vantaa lentokenttä)
 '''
 
 
-#   Tämä voi laittaa pääohjelmaan
-# pelin alkun jälkeen
-nimi = input("Syötä oma nimi: ")
-nimea_hahmo(yhteys, nimi)
+
 '''
 # Tää mietin laittamaan vielä edelliseen funktioon keskiviikkona
 print("Avatut maanosat:", ", ".join(continents_sql_list))
 '''
 
 '''      
-while True:
+
 
     # Tää pitäis tarkistaa koko ajan lennot määrät toimiakseen
     # mut voidaan tehdä tarkistus jos esim 
@@ -79,21 +96,13 @@ while True:
         # Tai lisätä muuttujaa pisteeseen ja sitten kun peli on tehty,
         # vaihtaa pisteet rahaksi ja päivittää sitä tietokantaan
 
-        #noppapeli
-        #pisteet = 10  # aloitetaan esimerkiksi 10 pisteestä
-        #pisteet = noppa_peli(pisteet)
-        #print(f"Uudet pisteet: {pisteet}")
-
-
-        #tietokilpailu
-        #pisteet = 0
-        #pisteet = tietokilpailu_peli(pisteet)
-        #print(f"Uudet pisteet pääohjelmassa: {pisteet}")
 
 
 
-        #arvo kolme kenttää
-        #tulosta_numeroitu_lista(kohteet)'
+
+
+
+
 '''
 
 
