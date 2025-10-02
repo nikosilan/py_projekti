@@ -17,7 +17,7 @@ from hahmon_luonti import nimea_hahmo
 
 from aircraft_game import peli
 
-from noppa import noppa_peli
+from noppa2 import get_raha, noppa_peli, update_raha
 
 # Kaikki muuttujat tähän
 #yhdistäminen tietokantaan
@@ -39,36 +39,21 @@ while True:
     peli(yhteys)
 
     #tietokilpailu
-    pisteet = 0
+    pisteet = get_raha(yhteys)
     pisteet = tietokilpailu_peli(pisteet)
-    print(f"Uudet pisteet pääohjelmassa: {pisteet}")
+    update_raha(pisteet,yhteys)
+    print(f"Sinulla on nyt {pisteet}€.")
 
     #noppapeli
-    pisteet = 10  # aloitetaan esimerkiksi 10 pisteestä
+    pisteet = get_raha(yhteys)
     pisteet = noppa_peli(pisteet)
-    print(f"Uudet pisteet: {pisteet}")
+    update_raha(pisteet, yhteys)
+    print(f"Sinulla on nyt {pisteet}€.")
 ''' 
 Hei, tehdäänkö meidän alkupiste Suomesta? (Helsinki-Vantaa lentokenttä)
 '''
 
-
-
 '''
-# Tää mietin laittamaan vielä edelliseen funktioon keskiviikkona
-print("Avatut maanosat:", ", ".join(continents_sql_list))
-'''
-
-'''      
-
-
-    # Tää pitäis tarkistaa koko ajan lennot määrät toimiakseen
-    # mut voidaan tehdä tarkistus jos esim 
-    # if flight_count == (5, 10, 15, 20, 25, 30) or flight_count >= 30
-    # tai tarkistus ennen lentoa, joka ei vaatis sitten if-ehtoa ollenkaa
-    # mielestäni while True toimis oikein hyvinkin 
-    
-    avatut_maanosat = hae_avatut_maanosat(flight_count)
-    continents_sql_list.extend(avatut_maanosat)
     
         #rahamäärä
         #raha_määrä = int(input("syötä rahan määrä: "))
@@ -92,19 +77,6 @@ print("Avatut maanosat:", ", ".join(continents_sql_list))
                 print("Virheellinen numero (valitse 1, 2 tai 3).")
         except ValueError:
             print("Syötteen täytyy olla numero.")
-
-    
-        # Illian vielä on tarkistettava molempia pelejä myös saada näitä pisteitä suoraan rahaksi 
-        # Tai lisätä muuttujaa pisteeseen ja sitten kun peli on tehty,
-        # vaihtaa pisteet rahaksi ja päivittää sitä tietokantaan
-
-
-
-
-
-
-
-
 '''
 
 

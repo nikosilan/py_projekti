@@ -1,7 +1,10 @@
 from geopy.distance import geodesic
 from aircraft_config import aircraft, aircraft_fuel_burn, FUEL_DENSITY, CO2_EMISSION_FACTOR
-from aircraft_utils import get_airport_info, get_current_fuel, update_fuel, random_kohteet
-from aircraft_lista import tulosta_numeroitu_lista
+from aircraft_utils import get_airport_info, get_current_fuel, update_fuel
+from random_kohde_lentokenttä import random_kohteet, tulosta_numeroitu_lista
+
+from log_in import kirjautuminen
+yhteys = kirjautuminen()
 
 def peli(yhteys):
     current_airport = get_airport_info("EFHK", yhteys)
@@ -17,7 +20,7 @@ def peli(yhteys):
     print(f"Your aircraft: {aircraft}\n")
 
     while True:
-        kohteet = random_kohteet(yhteys)
+        kohteet = random_kohteet(yhteys, flights)
         tulosta_numeroitu_lista(kohteet)
 
         choice = input("\nChoose destination (1-3) or q to quit: ")
@@ -40,11 +43,9 @@ def peli(yhteys):
                 current_fuel = get_current_fuel(yhteys)
                 if current_fuel is None:
                     print("Player fuel not found in DB.")
-                    break
 
                 if fuel_needed > current_fuel:
                     print("Not enough fuel for this flight!")
-                    continue
 
                 update_fuel(yhteys, -fuel_needed)
 
@@ -64,3 +65,5 @@ def peli(yhteys):
                 print("Choose 1, 2, or 3.")
         except ValueError:
             print("Enter a number (1-3) or q to quit.")
+
+peli(yhteys)

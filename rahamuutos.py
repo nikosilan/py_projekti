@@ -1,24 +1,18 @@
 import mysql.connector
+from log_in import kirjautuminen
 
-yhteys = mysql.connector.connect(
-                host='127.0.0.1',
-                port=3306,
-                database='flight_game',
-                user='niko',
-                password='salasana',
-                autocommit=True
-            )
+#yhteys = kirjautuminen()
 
 
 # päivittää rahasaldoa tietokantaan
-def raha_muutos(raha_muutos):
+def raha_muutos(raha_muutos, yhteys):
     sql = "UPDATE game SET raha = raha + %s WHERE id = %s;"
     kursori = yhteys.cursor()
     kursori.execute(sql, (raha_muutos, 1))
     return kursori.rowcount
 
 # hakee tiedon paljon sinulla on rahaa tilillä
-def raha_saldo():
+def raha_saldo(yhteys):
     sql = "SELECT raha FROM game WHERE id = 1;"
     kursori = yhteys.cursor()
     kursori.execute(sql)
