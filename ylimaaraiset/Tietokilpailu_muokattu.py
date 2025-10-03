@@ -66,7 +66,7 @@ def update_raha(pisteet, yhteys, hahmo_id=1):
 
 
 
-from tieto_kilpailu import get_raha, tietokilpailu_peli, update_raha
+# from tieto_kilpailu import get_raha, tietokilpailu_peli, update_raha
 
 
 pisteet = get_raha(yhteys)

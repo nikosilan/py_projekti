@@ -34,8 +34,7 @@ def noppa_peli(pisteet):
                     or (pelaaja_noppa2, pelaaja_noppa1) == (tietokone_noppa1, tietokone_noppa2)):
                 palkinto = random.randint(1, 100)
                 print(f"Onnittelut! Heitot täsmäsivät, saat {palkinto} pistettä!")
-                pisteet += palkinto
-                return pisteet
+                return palkinto
             else:
                 print("Heitot eivät täsmänneet, ei pisteitä.")
 
@@ -45,7 +44,7 @@ def noppa_peli(pisteet):
         else:
             print("Väärä syöte, anna 'y' tai 'n'.")
 
-def update_raha(pisteet, yhteys, hahmo_id=1):
+def update_raha(yhteys, pisteet, hahmo_id=1):
     cursor = yhteys.cursor()
 
     sql = "UPDATE game SET raha = raha + %s WHERE id = %s"

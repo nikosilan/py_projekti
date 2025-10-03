@@ -5,7 +5,7 @@ from log_in import kirjautuminen
 
 
 # päivittää rahasaldoa tietokantaan
-def raha_muutos(raha_muutos, yhteys):
+def raha_muutos(yhteys, raha_muutos):
     sql = "UPDATE game SET raha = raha + %s WHERE id = %s;"
     kursori = yhteys.cursor()
     kursori.execute(sql, (raha_muutos, 1))
@@ -17,7 +17,9 @@ def raha_saldo(yhteys):
     kursori = yhteys.cursor()
     kursori.execute(sql)
     tulos = kursori.fetchone()
-    return print(tulos[0])
+    if tulos is None:
+        return 0
+    return tulos[0]
 
 # globaali muuttuja 'raha'
 '''rahaa_tilillä = raha_saldo()'''

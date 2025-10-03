@@ -1,7 +1,7 @@
 #tietokilpailu peli
 import random
-#from log_in import kirjautuminen
-#yhteys = kirjautuminen()
+# from log_in import kirjautuminen
+# yhteys = kirjautuminen()
 
 
 def get_raha(yhteys, hahmo_id=1):
@@ -54,9 +54,9 @@ def tietokilpailu_peli(pisteet):
             break
 
     print(f"\nPelin lopussa sinulla on yhteensä {saatu_pisteet} pistettä.")
-    return pisteet
+    return saatu_pisteet
 
-def update_raha(pisteet, yhteys, hahmo_id=1):
+def update_raha(yhteys, pisteet, hahmo_id=1):
     cursor = yhteys.cursor()
 
     sql = "UPDATE game SET raha = raha + %s WHERE id = %s"
@@ -66,10 +66,10 @@ def update_raha(pisteet, yhteys, hahmo_id=1):
 
 
 #   Pääohjelmaan alkuun
-from tieto_kilpailu import get_raha, tietokilpailu_peli, update_raha
+# from tieto_kilpailu import get_raha, tietokilpailu_peli, update_raha
 
 #   Pääohjelmaan kun halutaan ajaa tietokilpailun peli
-#pisteet = get_raha(yhteys)
-#pisteet = tietokilpailu_peli(pisteet)
-#update_raha(pisteet,yhteys)
-#print(f"Sinulla on nyt {pisteet}€.")
+# pisteet = get_raha(yhteys)
+# pisteet = tietokilpailu_peli(pisteet)
+# update_raha(yhteys, pisteet)
+# print(f"Sinulla on nyt {pisteet}€.")
