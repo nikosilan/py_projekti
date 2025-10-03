@@ -1,4 +1,6 @@
 import mysql.connector
+from aircraft_lista import search_for_open_destinations
+
 
 def get_airport_info(icao_code, conn):
     cursor = conn.cursor()
@@ -32,21 +34,30 @@ def update_fuel(conn, fuel_change, min_fuel=0, max_fuel=240000):
     print(f"Fuel updated: {current_fuel:.2f} → {new_fuel:.2f} liters")
     return True
 
-def random_kohteet(conn):
-    """Fetch 3 random large airports in Europe."""
+def random_destination(yhteys, flight_count):
     destinations = []
-    for _ in range(3):
-        sql = ("""
-            SELECT airport.ident, airport.name, country.name, airport.latitude_deg, airport.longitude_deg
-            FROM airport
-            INNER JOIN country ON airport.iso_country = country.iso_country
-            WHERE country.continent = 'EU' AND type LIKE 'large_airport'
-            ORDER BY RAND() LIMIT 1;
-        """)
-        cursor = conn.cursor()
-        cursor.execute(sql)
-        tulos = cursor.fetchone()
-        cursor.close()
+    continents_sql_list = set()
+
+    avatut_maanosat = search_for_open_destinations(flight_count)
+    continents_sql_list.update(avatut_maanosat)
+
+    continents_str = ','.join(f"'{c}'" for c in continents_sql_list)
+
+    print("Avatut maanosat:", ", ".join(continents_sql_list))
+
+    for kohde in range(3):
+        sql = (f'SELECT airport.ident, airport.name, country.name, airport.latitude_deg, airport.longitude_deg '
+               f'FROM airport '
+               f'INNER JOIN country ON airport.iso_country = country.iso_country '
+               f'WHERE country.continent IN ({continents_str})'
+               f'AND TYPE like "large_airport" ORDER BY RAND() LIMIT 1;')
+
+        kursori = yhteys.cursor()
+        kursori.execute(sql)
+        tulos = kursori.fetchone()
+
+        # Purkaa monikon ja lisää kenttien ja maiden nimet listaan destinations
         if tulos:
             destinations.append(tulos)
+
     return destinations

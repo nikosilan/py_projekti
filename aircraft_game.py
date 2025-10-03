@@ -1,7 +1,7 @@
 from geopy.distance import geodesic
 from aircraft_config import aircraft, aircraft_fuel_burn, FUEL_DENSITY, CO2_EMISSION_FACTOR
-from aircraft_utils import get_airport_info, get_current_fuel, update_fuel
-from random_kohde_lentokenttä import random_kohteet, tulosta_numeroitu_lista
+from aircraft_utils import get_airport_info, get_current_fuel, update_fuel, random_destination
+from aircraft_lista import tulosta_numeroitu_lista, search_for_open_destinations
 
 from log_in import kirjautuminen
 yhteys = kirjautuminen()
@@ -20,7 +20,7 @@ def peli(yhteys):
     print(f"Your aircraft: {aircraft}\n")
 
     while True:
-        kohteet = random_kohteet(yhteys, flights)
+        kohteet = random_destination(yhteys, flights)
         tulosta_numeroitu_lista(kohteet)
 
         choice = input("\nChoose destination (1-3) or q to quit: ")
