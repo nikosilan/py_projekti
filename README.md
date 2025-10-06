@@ -2,9 +2,9 @@
 
 ## Pelistä lyhyesti:
 Lentopeli on tekstipohjainen lentopeli, jossa pelaaja pääsee matkustamaan ympäri maailmaa suurten lentokenttien välillä.  
-Pelin tavoitteena on ansaita rahaa, hallita polttoainetta ja suorittaa lentoja edetäksesi pelissä ja avataksesi uusia mantereita.  
+Pelin tavoitteena on ansaita rahaa, hallita polttoainetta ja suorittaa lentoja edetäkseen pelissä ja avatakseen uusia mantereita.  
 
-Peli alkaa päävalikosta, joka tervehtii sinua ja antaa neljä vaihtoehtoa:
+Peli alkaa päävalikosta, joka tervehtii ja antaa neljä vaihtoehtoa:
 1. **Aloita peli**  
 2. **Luo uusi pelaaja**  
 3. **Katso pelaajan tilastot**  
@@ -28,7 +28,7 @@ Mitä enemmän lennät, sitä enemmän etenet pelissä.
 
 Jokaisen lennon jälkeen voi tapahtua **satunnaisia tapahtumia**, kuten:
 - Lentokoneen korjaus  
-- Arvotavaran löytäminen uudesta kohteesta  
+- Aarteiden löytäminen uudesta kohteesta  
 
 Jos haluat ansaita lisää rahaa, voit pelata jotakin kahdesta minipelistä:
 - **Noppa peli**  
@@ -77,7 +77,7 @@ Avaa tiedosto **LOG_IN.PY** ja lisää sinne omat tietosi tietokantayhteyttä va
 ---
 
 ### 3. Pelin aloitus
-Ajaa ensin "AIRCRAFT_MAIN.PY" tämä on tärkeä!
+Ajaa ensin **AIRCRAFT_MAIN.PY** tämä on tärkeä!
 Kun peli on käynnissä, **luo ensin hahmo** ennen kuin alat pelata normaalisti.  
 Muuten peli ei pysty seuraamaan raha-, polttoaine- tai lentotietoja.
 
