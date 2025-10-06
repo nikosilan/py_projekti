@@ -45,15 +45,15 @@ def tietokilpailu_peli(pisteet):
         print(kysymys)
         pelaajan_vastaus = input("Anna vastaus: ").strip()
         if pelaajan_vastaus.lower() == oikea_vastaus.lower():
-            random_piste_maara = random.randint(1, 10)
-            print(f"Onnea! Vastasit oikein ja ansaitset {random_piste_maara} pistettä.")
+            random_piste_maara = random.randint(1, 100)
+            print(f"Onnea! Vastasit oikein ja ansaitset {random_piste_maara}€.")
             pisteet += random_piste_maara
             saatu_pisteet += random_piste_maara
         else:
             print("Valitettavasti et päässyt läpi ja et ansainnut senttiäkään!")
             break
 
-    print(f"\nPelin lopussa sinulla on yhteensä {saatu_pisteet} pistettä.")
+    print(f"\nPelin lopussa sinulla on yhteensä {saatu_pisteet}€.")
     return saatu_pisteet
 
 def update_raha(yhteys, pisteet, hahmo_id=1):

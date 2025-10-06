@@ -71,8 +71,12 @@ def peli(yhteys):
                 valittu = kohteet[choice - 1]
                 icao, name, country, lat, lon = valittu
 
+                raha = raha_saldo(yhteys)
                 if raha < flight_cost:
                     while True:
+                        if raha >= flight_cost:
+                            print("✅ You now have enough money for this flight!")
+                            break
                         print(f"❌ Not enough money for this flight! Flight cost: {flight_cost}€, you have: {raha}€")
                         print("Earn more money before flying.\n")
                         time.sleep(2)
@@ -93,18 +97,18 @@ def peli(yhteys):
                                 )
 
                                 if game_choice == "1":
-                                    pisteet = raha_saldo(yhteys)
-                                    pisteet = noppa_peli(pisteet)
-                                    raha_muutos(yhteys, pisteet)
-                                    print(f"You now have {pisteet}€ to spend.")
+                                    reward = noppa_peli(raha)
+                                    raha_muutos(yhteys, reward)
+                                    raha = raha_saldo(yhteys)
+                                    print(f"You now have {raha}€ to spend.")
                                     time.sleep(2)
                                     break
 
                                 elif game_choice == "2":
-                                    pisteet = raha_saldo(yhteys)
-                                    pisteet = tietokilpailu_peli(pisteet)
-                                    raha_muutos(yhteys, pisteet)
-                                    print(f"You now have {pisteet}€ to spend.")
+                                    reward = tietokilpailu_peli(raha)
+                                    raha_muutos(yhteys, reward)
+                                    raha = raha_saldo(yhteys)
+                                    print(f"You now have {raha}€ to spend.")
                                     time.sleep(2)
                                     break
 
@@ -142,12 +146,12 @@ def peli(yhteys):
                         if fuel_choice == "1":
                             raha = raha_saldo(yhteys)
                             if raha >= 100:
-                                palkki()
+                                print("Refueling the aircraft...")
+                                time.sleep(3)
                                 update_fuel(yhteys, 240000)
-                                uusi_raha = raha - 100
-                                update_raha(yhteys, uusi_raha)
+                                raha_muutos(yhteys, -100)
                                 print("✅ Refueled! Ready for flight.\n")
-                                current_fuel = get_current_fuel(yhteys)
+                                current_fuel = 240000
                                 break
                             else:
                                 print("You don't have enough money to refuel your aircraft. You need to earn money first.\n")
@@ -164,18 +168,18 @@ def peli(yhteys):
                                 )
 
                                 if game_choice == "1":
-                                    pisteet = raha_saldo(yhteys)
-                                    pisteet = noppa_peli(pisteet)
-                                    raha_muutos(yhteys, pisteet)
-                                    print(f"You now have {pisteet}€ to spend.")
+                                    reward = noppa_peli(raha)
+                                    raha_muutos(yhteys, reward)
+                                    raha = raha_saldo(yhteys)
+                                    print(f"You now have {raha}€ to spend.")
                                     time.sleep(2)
                                     break
 
                                 elif game_choice == "2":
-                                    pisteet = raha_saldo(yhteys)
-                                    pisteet = tietokilpailu_peli(pisteet)
-                                    raha_muutos(yhteys, pisteet)
-                                    print(f"You now have {pisteet}€ to spend.")
+                                    reward = noppa_peli(raha)
+                                    raha_muutos(yhteys, reward)
+                                    raha = raha_saldo(yhteys)
+                                    print(f"You now have {raha}€ to spend.")
                                     time.sleep(2)
                                     break
 
@@ -203,8 +207,7 @@ def peli(yhteys):
                 update_flight_count(yhteys, flight_count)
 
                 print(f"💸 Flight cost: {flight_cost}€")
-                uusi_raha = raha - flight_cost
-                raha_muutos(yhteys, uusi_raha)
+                raha_muutos(yhteys, -flight_cost)
 
                 current_airport = valittu
                 update_current_airport(yhteys, valittu[0])
@@ -214,8 +217,7 @@ def peli(yhteys):
         except ValueError:
             print("❌ Enter a number (1-3) or q to quit.")
 
-        tapahtuma = airport_event(yhteys)
-        update_raha(yhteys, tapahtuma)
+        airport_event(yhteys)
         time.sleep(2)
         print("\n")
         while True:  # continue-choice loop
@@ -238,20 +240,20 @@ def peli(yhteys):
                     )
 
                     if game_choice == "1":
-                        pisteet = raha_saldo(yhteys)
-                        pisteet = noppa_peli(pisteet)
-                        raha_muutos(yhteys, pisteet)
-                        print(f"You now have {pisteet}€ to spend.")
+                        reward = noppa_peli(raha)
+                        raha_muutos(yhteys, reward)
+                        raha = raha_saldo(yhteys)
+                        print(f"You now have {raha}€ to spend.")
                         time.sleep(2)
-                        break  # exit mini-game loop, back to continue_choice menu
+                        break
 
                     elif game_choice == "2":
-                        pisteet = raha_saldo(yhteys)
-                        pisteet = tietokilpailu_peli(pisteet)
-                        raha_muutos(yhteys, pisteet)
-                        print(f"You now have {pisteet}€ to spend.")
+                        reward = noppa_peli(raha)
+                        raha_muutos(yhteys, reward)
+                        raha = raha_saldo(yhteys)
+                        print(f"You now have {raha}€ to spend.")
                         time.sleep(2)
-                        break  # exit mini-game loop, back to continue_choice menu
+                        break
 
                     else:
                         print("❌ Invalid option, please try again.")

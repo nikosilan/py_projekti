@@ -41,14 +41,14 @@ def menu():
     return choice
 
 def stats(yhteys):
-    sql = "SELECT screen_name, bensa, raha FROM game WHERE id = 1;"
+    sql = "SELECT screen_name, bensa, raha, flights FROM game WHERE id = 1;"
     cursor = yhteys.cursor()
     cursor.execute(sql)
     result = cursor.fetchone()
     cursor.close()
 
     if result:
-        name, bensa, raha = result
+        name, bensa, raha, flight_count= result
         print(f"📊 Your stats:\nYour player {name} has earned {raha}€ money, "
               f"has {bensa} liters of fuel left, and has flown {flight_count} times.")
     else:
