@@ -1,14 +1,7 @@
 import random
-import mysql.connector
+# from log_in import kirjautuminen
 
-yhteys = mysql.connector.connect(
-                host='127.0.0.1',
-                port=3306,
-                database='flight_game',
-                user='Juuso',
-                password='salasana',
-                autocommit=True
-            )
+# yhteys = kirjautuminen()
 
 airport = "Lontoo"  # lentokenttä
 TREASURES = {"€10 seteli": 10,
@@ -20,7 +13,7 @@ treasures_avaimet = ["€10 seteli", "€20 seteli", "koru", "matkamuisto"]
 random.shuffle(treasures_avaimet)
 satunnainen_avain = treasures_avaimet[0]
 
-def airport_event():
+def airport_event(yhteys):
     treasure_chance = 0.15  # 15% mahdollisuus löytää aarre
     robbed_chance = 0.10    # 10% mahdollisuus tulla ryöstetyksi
 
@@ -45,7 +38,7 @@ def airport_event():
         return "Ei tapahtumaa."
 
 #funktion suoritus
-tapahtuma = airport_event()
+# tapahtuma = airport_event()
 
-print(f"Saavuit lentokentälle: {airport}")
-print(f"Tapahtuma: {tapahtuma}")
+# print(f"Saavuit lentokentälle: {airport}")
+# print(f"Tapahtuma: {tapahtuma}")
