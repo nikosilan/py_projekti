@@ -33,8 +33,9 @@ def menu():
         "Welcome to Aircraft game! This is the menu of this game."
         "\nPlease choose the option to proceed:"
         "\n1. Start game"
-        "\n2. Player stats"
-        "\n3. Exit game"
+        "\n2. Create new player"
+        "\n3. Player stats"
+        "\n4. Exit game"
         "\n> "
     )
     return choice
@@ -56,14 +57,32 @@ def stats(yhteys):
 def main():
     global flight_count, current_airport
     try:
-        while True:  # Main menu loop
+        while True:
             choice = menu()
 
             if choice == "1":
                 print("Starting game...")
                 flight_count, current_airport = peli(yhteys, flight_count, current_airport)
 
+
             elif choice == "2":
+                while True:
+                    confirm_choice = input(
+                        "You are about to make a new player. Your default changes will be wiped if you"
+                        "\ndecide to overwrite the existing player. Are you sure? (y/n)"
+                        "\n>")
+                    if confirm_choice.lower() == "y":
+                        nimi = input("Your new name (max 20): ")
+                        nimea_hahmo(yhteys, nimi, hahmo_id=1)
+                        break  # exit loop after creating new player
+                    elif confirm_choice.lower() == "n":
+                        print("Returning you back to the main menu.")
+                        time.sleep(2)
+                        break
+                    else:
+                        print("Type in correct answer.")
+                        time.sleep(1)
+            elif choice == "3":
                 stats(yhteys)
                 while True:
                     confirm = input("Do you want to go back to the menu? (y/n): \n> ")
@@ -76,7 +95,7 @@ def main():
                     else:
                         print("Type in correct answer.")
 
-            elif choice == "3":
+            elif choice == "4":
                 confirm = input("Are you sure you want to quit this game? (y/n): \n> ")
                 if confirm.lower() == "y":
                     print("See you next time!")
