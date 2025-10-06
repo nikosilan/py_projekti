@@ -1,7 +1,7 @@
 from log_in import kirjautuminen
-#from random_kohde_lentokenttä import random_kohteet
-#from random_kohde_lentokenttä import hae_avatut_maanosat
-#from random_kohde_lentokenttä import tulosta_numeroitu_lista
+from aircraft_config import aircraft, aircraft_fuel_burn, FUEL_DENSITY, CO2_EMISSION_FACTOR
+from aircraft_utils import get_airport_info, get_current_fuel, update_fuel, random_destination
+from aircraft_lista import tulosta_numeroitu_lista, search_for_open_destinations
 
 #from noppa import noppa_peli
 from tieto_kilpailu import tietokilpailu_peli
@@ -21,13 +21,18 @@ from noppa2 import get_raha, noppa_peli, update_raha
 
 # Kaikki muuttujat tähän
 #yhdistäminen tietokantaan
-yhteys = kirjautuminen()
-flight_count = 0 # Lennot määrä, käytetään sitten maanosien aukeamisessa
-continents_sql_list = [] # Alussa on vain Eurooppa, sitten tähän lisätään muita
-
+# yhteys = kirjautuminen()
+# flight_count = 0 # Lennot määrä, käytetään sitten maanosien aukeamisessa
+'''
+def menu():
+    return print("Welcome to Aircraft game! This is the menu of this game."
+          "Please choose the option to proceed:"
+          "1. Start game"
+          "2. Player stats"
+          "3. Exit game")'''
 #lataus palkki
-palkki()
-
+# palkki()
+'''
 #hahmon nimen luonti
 nimi = input("Syötä oma nimi: ")
 nimea_hahmo(yhteys, nimi)
@@ -49,7 +54,7 @@ while True:
     pisteet = noppa_peli(pisteet)
     update_raha(pisteet, yhteys)
     print(f"Sinulla on nyt {pisteet}€.")
-''' 
+
 Hei, tehdäänkö meidän alkupiste Suomesta? (Helsinki-Vantaa lentokenttä)
 '''
 

@@ -23,9 +23,28 @@ def peli(yhteys, flight_count, current_airport):
     total_distance = 0
     total_emissions = 0
 
+    # Lentojen hinta
+    if flight_count == 0:
+        flight_cost = 70
+    elif 1 <= flight_count <= 4:
+        flight_cost = 150
+    elif 5 <= flight_count < 10:
+        flight_cost = 200
+    elif 10 <= flight_count < 15:
+        flight_cost = 300
+    elif 15 <= flight_count < 20:
+        flight_cost = 500
+    elif 20 <= flight_count < 25:
+        flight_cost = 600
+    elif 25 <= flight_count < 30:
+        flight_cost = 900
+    elif flight_count >= 30:
+        flight_cost = 1000
+
     while True:
         print(f"\n🌍 Welcome! Starting at {current_airport[1]} ({current_airport[0]}) in {current_airport[2]}.")
         print(f"Your aircraft: {aircraft}\n")
+        print(f"The price of the flight is: {flight_cost}€\n")
 
         kohteet = random_destination(yhteys, flight_count)
         tulosta_numeroitu_lista(kohteet)
@@ -125,6 +144,9 @@ def peli(yhteys, flight_count, current_airport):
                 total_distance += distance
                 total_emissions += co2_emissions
                 flight_count += 1
+
+                print(f"💸 Flight cost: {flight_cost}€")
+                update_raha(yhteys, -flight_cost)
 
                 current_airport = valittu
                 print(f"📍 You are now at {current_airport[1]} ({current_airport[0]}) in {current_airport[2]}.")
