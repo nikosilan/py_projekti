@@ -22,11 +22,13 @@ from huolto2 import aircraft_huolto
 
 
 def peli(yhteys):
-    total_distance = 0
-    total_emissions = 0
+    total_distance = 0 #lentomatka
+    total_emissions = 0 #CO2- päästöt
+
 
     flight_count = get_flight_count(yhteys, hahmo_id=1)
 
+    #haetaan nykyinen lentokenttä
     current_airport = get_current_airport(yhteys)
     if not current_airport:
         print("⚠️ Current airport not set. Defaulting to EFHK.")
@@ -51,17 +53,20 @@ def peli(yhteys):
         flight_cost = 1000
 
     while True:
+        #rahatilanne
         raha = raha_saldo(yhteys)
+        #lähtökentän tiedot
         print(f"\n🌍 Welcome! Starting at {current_airport[1]} ({current_airport[0]}) in {current_airport[2]}.")
         print(f"Your aircraft: {aircraft}\n")
         print(f"The price of the flight is: {flight_cost}€\n")
-
+        #arvotaan lentokenttäkohteet
         kohteet = random_destination(yhteys, flight_count)
         tulosta_numeroitu_lista(kohteet)
 
         choice = input("\nChoose destination (1-3) or q to quit: ")
         if choice.lower() == "q":
-            print(f"\n✈️ Game over! Flights: {flight_count}, Total distance: {total_distance:.1f} km")
+            #välitilastot
+            print(f"\n Game over! Flights: {flight_count}, Total distance: {total_distance:.1f} km")
             print(f"Total CO₂ emissions: {total_emissions:.1f} kg")
             print("Returning you back to main menu... \n")
             time.sleep(2)
@@ -72,9 +77,10 @@ def peli(yhteys):
             if 1 <= choice <= 3:
                 valittu = kohteet[choice - 1]
                 icao, name, country, lat, lon = valittu
-
+                #onko tarpeeksi rahaa
                 raha = raha_saldo(yhteys)
                 if raha < flight_cost:
+                    #pelaaja voi ansaita rahaa tai peru lento
                     while True:
                         if raha >= flight_cost:
                             print("✅ You now have enough money for this flight!")
@@ -88,7 +94,7 @@ def peli(yhteys):
                             "2. Exit to menu\n"
                             "> "
                         )
-
+                        #mini-pelien valinta
                         if earn_choice == "1":
                             while True:
                                 game_choice = input(
@@ -97,7 +103,7 @@ def peli(yhteys):
                                     "\n2. Tietokilpailu"
                                     "\n> "
                                 )
-
+                                #käytetään valittua peliä ja päivitetään raha
                                 if game_choice == "1":
                                     reward = noppa_peli(raha)
                                     raha_muutos(yhteys, reward)
@@ -107,6 +113,7 @@ def peli(yhteys):
                                     break
 
                                 elif game_choice == "2":
+
                                     reward = tietokilpailu_peli(raha)
                                     raha_muutos(yhteys, reward)
                                     raha = raha_saldo(yhteys)
@@ -118,24 +125,27 @@ def peli(yhteys):
                                     print("❌ Invalid option, please try again.\n")
 
                         elif earn_choice == "2":
+                            #lennon peruminen ja päävalikkoon palaaminen
                             print("You are exiting now back to the main menu.")
                             time.sleep(2)
                             return
                         else:
                             print("❌ Invalid option, please try again.\n")
-
+                #lasketaan lentomatka ja polttoaineen tarve
                 coords_current = (current_airport[3], current_airport[4])
                 coords_dest = (lat, lon)
                 distance = geodesic(coords_current, coords_dest).kilometers
 
                 fuel_needed = (distance / 100) * aircraft_fuel_burn
+                #nykyinen polttoainemäärä
                 current_fuel = get_current_fuel(yhteys)
                 if current_fuel is None:
                     print("Player fuel not found in DB.")
                     return
-
+                #Jos polttoaine ei riitä,annetaan vaihtoehdot tankkaukselle
                 while fuel_needed > current_fuel:
                     print("❌ Not enough fuel for this flight!\n")
+                    #loop tankkauksen ja minipelien valintaan
                     while True:
                         fuel_choice = input(
                             "Do you want to tank the aircraft now?\n"
@@ -192,34 +202,35 @@ def peli(yhteys):
                             return
                         else:
                             print("❌ Invalid option, please try again.\n")
-
+                #päivitetään polttoaine määrä
                 update_fuel(yhteys, -fuel_needed)
-
+                #näytetään lennon tiedot
                 print(f"\n🛫 Flight {flight_count + 1}:")
                 print(f"From {current_airport[1]} to {name} airport = {distance:.1f} km")
                 print(f"Fuel used: {fuel_needed:.1f} liters ({aircraft})")
-
+                #co2- päästöt
                 fuel_needed_kg = fuel_needed * FUEL_DENSITY
                 co2_emissions = fuel_needed_kg * CO2_EMISSION_FACTOR
                 print(f"Estimated CO₂ emissions: {co2_emissions:.1f} kg")
-
+                #päivitetään kertynyt matka ja päästöt
                 total_distance += distance
                 total_emissions += co2_emissions
                 flight_count += 1
                 update_flight_count(yhteys, flight_count)
-
+                #veloitetaan lennon hinta
                 print(f"💸 Flight cost: {flight_cost}€")
                 raha_muutos(yhteys, -flight_cost)
-
+                #päivitetään nykyinen lentokenttä
                 current_airport = valittu
                 update_current_airport(yhteys, valittu[0])
                 print(f"📍 You are now at {current_airport[1]} ({current_airport[0]}) in {current_airport[2]}.")
+                #tarkistetaan huollon tarve
                 aircraft_huolto(yhteys)
             else:
                 print("❌ Choose 1, 2, or 3.")
         except ValueError:
             print("❌ Enter a number (1-3) or q to quit.")
-
+        #satunnainen lentokenttätapahtuma
         airport_event(yhteys)
         time.sleep(2)
         print("\n")

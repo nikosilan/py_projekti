@@ -29,6 +29,7 @@ if not current_airport:
     print("Error: EFHK not found in database!")
 
 def menu():
+    #tulostaa päävalikon ja palauttaa käyttäjän valinnan
     choice = input(
         "Welcome to Aircraft game! This is the menu of this game."
         "\nPlease choose the option to proceed:"
@@ -41,6 +42,7 @@ def menu():
     return choice
 
 def stats(yhteys):
+    #tulostaa tilastot
     sql = "SELECT screen_name, bensa, raha, flights FROM game WHERE id = 1;"
     cursor = yhteys.cursor()
     cursor.execute(sql)
@@ -55,6 +57,7 @@ def stats(yhteys):
         print("⚠️ No player data found.")
 
 def main():
+    #valikko rakenne
     global current_airport
     try:
         while True:
