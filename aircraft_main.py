@@ -24,6 +24,9 @@ from noppa2 import get_raha, noppa_peli, update_raha
 yhteys = kirjautuminen()
 
 flight_count = 0
+current_airport = get_airport_info("EFHK", yhteys)
+if not current_airport:
+    print("Error: EFHK not found in database!")
 
 def menu():
     choice = input(
@@ -36,32 +39,61 @@ def menu():
     )
     return choice
 
-def main():
-    choice = menu()
+def stats(yhteys):
+    sql = "SELECT screen_name, bensa, raha FROM game WHERE id = 1;"
+    cursor = yhteys.cursor()
+    cursor.execute(sql)
+    result = cursor.fetchone()
+    cursor.close()
 
-    if choice == "1":
-        print("Starting game...")
-        peli(yhteys, flight_count)
-
-    elif choice == "2":
-        print("Stats are being developed now.")
-
-    elif choice == "3":
-        while True:
-            confirm = input("Are you sure you want to quit this game? (y/n): "
-                            "\n> ")
-            if confirm.lower() == "y":
-                print("See you next time!")
-                sys.exit(0)
-            elif confirm.lower() == "n":
-                print("Returning you back to the menu...")
-                menu()
-            else:
-                print("Type in correct answer.")
-                break
-
+    if result:
+        name, bensa, raha = result
+        print(f"📊 Your stats:\nYour player {name} has earned {raha}€ money, "
+              f"has {bensa} liters of fuel left, and has flown {flight_count} times.")
     else:
-        print("Invalid choice, please select 1, 2, or 3.")
+        print("⚠️ No player data found.")
+
+def main():
+    global flight_count, current_airport
+    try:
+        while True:  # Main menu loop
+            choice = menu()
+
+            if choice == "1":
+                print("Starting game...")
+                flight_count, current_airport = peli(yhteys, flight_count, current_airport)
+
+            elif choice == "2":
+                stats(yhteys)
+                while True:
+                    confirm = input("Do you want to go back to the menu? (y/n): \n> ")
+                    if confirm.lower() == "y":
+                        print("Returning you back to the menu...\n")
+                        break
+                    elif confirm.lower() == "n":
+                        print("Ok, updating your stats...\n")
+                        stats(yhteys)
+                    else:
+                        print("Type in correct answer.")
+
+            elif choice == "3":
+                confirm = input("Are you sure you want to quit this game? (y/n): \n> ")
+                if confirm.lower() == "y":
+                    print("See you next time!")
+                    sys.exit(0)
+                elif confirm.lower() == "n":
+                    print("Returning you back to the menu...\n")
+                    continue
+                else:
+                    print("Type in correct answer.")
+
+            else:
+                print("Invalid choice, please select 1, 2, or 3.\n")
+
+    except KeyboardInterrupt:
+        print("\nGame interrupted. Exiting safely.")
+        sys.exit(0)
+
 
 if __name__ == "__main__":
     main()

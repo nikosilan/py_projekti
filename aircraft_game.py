@@ -15,18 +15,13 @@ from aarteet2 import airport_event
 
 from rahamuutos import raha_saldo, raha_muutos
 
-from log_in import kirjautuminen
-yhteys = kirjautuminen()
+# from log_in import kirjautuminen
+# yhteys = kirjautuminen()
 
 
-def peli(yhteys, flight_count):
+def peli(yhteys, flight_count, current_airport):
     total_distance = 0
     total_emissions = 0
-
-    current_airport = get_airport_info("EFHK", yhteys)
-    if not current_airport:
-        print("Error: EFHK not found in database!")
-        return
 
     while True:
         print(f"\n🌍 Welcome! Starting at {current_airport[1]} ({current_airport[0]}) in {current_airport[2]}.")
@@ -39,7 +34,9 @@ def peli(yhteys, flight_count):
         if choice.lower() == "q":
             print(f"\n✈️ Game over! Flights: {flight_count}, Total distance: {total_distance:.1f} km")
             print(f"Total CO₂ emissions: {total_emissions:.1f} kg")
-            return
+            print("Returning you back to main menu... \n")
+            time.sleep(2)
+            return flight_count, current_airport
 
         try:
             choice = int(choice)
@@ -58,7 +55,7 @@ def peli(yhteys, flight_count):
                     return
 
                 while fuel_needed > current_fuel:
-                    print("❌ Not enough fuel for this flight!")
+                    print("❌ Not enough fuel for this flight!\n")
                     while True:
                         fuel_choice = input(
                             "Do you want to tank the aircraft now?\n"
@@ -74,11 +71,11 @@ def peli(yhteys, flight_count):
                                 palkki()
                                 update_fuel(yhteys, 240000)
                                 update_raha(yhteys, pisteet=-100)  # refill fuel
-                                print("✅ Refueled! Ready for flight.")
+                                print("✅ Refueled! Ready for flight.\n")
                                 current_fuel = get_current_fuel(yhteys)
                                 break
                             else:
-                                print("You don't have enough money to refuel your aircraft. You need to earn money first.")
+                                print("You don't have enough money to refuel your aircraft. You need to earn money first.\n")
                                 break
 
                         elif fuel_choice == "2":
@@ -108,12 +105,12 @@ def peli(yhteys, flight_count):
                                     break
 
                                 else:
-                                    print("❌ Invalid option, please try again.")
+                                    print("❌ Invalid option, please try again.\n")
                         elif fuel_choice == "3":
                             print("Flight canceled due to insufficient fuel. Flight canceled.")
                             return
                         else:
-                            print("❌ Invalid option, please try again.")
+                            print("❌ Invalid option, please try again.\n")
 
                 update_fuel(yhteys, -fuel_needed)
 
@@ -180,14 +177,12 @@ def peli(yhteys, flight_count):
             elif continue_choice == "2":
                 print("\nLoading another pack of flights available just for you!")
                 time.sleep(2)
-                return peli(yhteys, flight_count)
+                return peli(yhteys, flight_count, current_airport)
 
             elif continue_choice == "3":
                 print("Returning to main menu...")
-                return flight_count
+                time.sleep(2)
+                return flight_count, current_airport
 
             else:
                 print("❌ Invalid option, please try again.")
-
-flight_count = 5
-peli(yhteys, flight_count)
