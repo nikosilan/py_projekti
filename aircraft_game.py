@@ -187,7 +187,7 @@ def peli(yhteys):
                                     break
 
                                 elif game_choice == "2":
-                                    reward = noppa_peli(raha)
+                                    reward = tietokilpailu_peli(raha)
                                     raha_muutos(yhteys, reward)
                                     raha = raha_saldo(yhteys)
                                     print(f"You now have {raha}€ to spend.")
@@ -261,7 +261,7 @@ def peli(yhteys):
                         break
 
                     elif game_choice == "2":
-                        reward = noppa_peli(raha)
+                        reward = tietokilpailu_peli(raha)
                         raha_muutos(yhteys, reward)
                         raha = raha_saldo(yhteys)
                         print(f"You now have {raha}€ to spend.")
