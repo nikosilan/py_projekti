@@ -22,6 +22,7 @@ from aircraft_game import peli
 from noppa2 import get_raha, noppa_peli, update_raha
 
 yhteys = kirjautuminen()
+palkki()
 
 current_airport = get_airport_info("EFHK", yhteys)
 if not current_airport:
