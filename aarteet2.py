@@ -3,7 +3,6 @@ import random
 
 # yhteys = kirjautuminen()
 
-airport = "Lontoo"  # lentokenttä
 TREASURES = {"€10 seteli": 10,
              "€20 seteli": 20,
              "koru": 50,
@@ -25,7 +24,8 @@ def airport_event(yhteys):
         kursori = yhteys.cursor()
         kursori.execute(sql, (TREASURES[satunnainen_avain], 1))
         yhteys.commit()
-        return f"Löysit aarteen: {item} joka on {TREASURES[satunnainen_avain]}€ arvoinen! Summa talletetaan tilillesi"
+        print(f"Löysit aarteen: {item} joka on {TREASURES[satunnainen_avain]}€ arvoinen! Summa talletetaan tilillesi")
+        return TREASURES[satunnainen_avain]
 
     elif roll < treasure_chance + robbed_chance:
 
@@ -33,9 +33,11 @@ def airport_event(yhteys):
         kursori = yhteys.cursor()
         kursori.execute(sql)
         yhteys.commit()
-        return "Ryöstö! Menetit 10% rahoistasi."
+        print("Ryöstö! Menetit 10% rahoistasi.")
+        return TREASURES[satunnainen_avain]
     else:
-        return "Ei tapahtumaa."
+        print("Ei satunnaista tapahtumaa.")
+        return None
 
 #funktion suoritus
 # tapahtuma = airport_event()
