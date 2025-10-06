@@ -24,7 +24,6 @@ def peli(yhteys):
     total_emissions = 0
 
     flight_count = get_flight_count(yhteys, hahmo_id=1)
-    raha = raha_saldo(yhteys)
 
     current_airport = get_current_airport(yhteys)
     if not current_airport:
@@ -50,6 +49,7 @@ def peli(yhteys):
         flight_cost = 1000
 
     while True:
+        raha = raha_saldo(yhteys)
         print(f"\n🌍 Welcome! Starting at {current_airport[1]} ({current_airport[0]}) in {current_airport[2]}.")
         print(f"Your aircraft: {aircraft}\n")
         print(f"The price of the flight is: {flight_cost}€\n")
@@ -70,6 +70,53 @@ def peli(yhteys):
             if 1 <= choice <= 3:
                 valittu = kohteet[choice - 1]
                 icao, name, country, lat, lon = valittu
+
+                if raha < flight_cost:
+                    while True:
+                        print(f"❌ Not enough money for this flight! Flight cost: {flight_cost}€, you have: {raha}€")
+                        print("Earn more money before flying.\n")
+                        time.sleep(2)
+                        earn_choice = input(
+                            "Do you want to earn more money or do you want to exit to the menu?\n"
+                            "1. Earn money\n"
+                            "2. Exit to menu\n"
+                            "> "
+                        )
+
+                        if earn_choice == "1":
+                            while True:
+                                game_choice = input(
+                                    "Okay! You have some mini-games that you can choose from:"
+                                    "\n1. Noppa peli"
+                                    "\n2. Tietokilpailu"
+                                    "\n> "
+                                )
+
+                                if game_choice == "1":
+                                    pisteet = raha_saldo(yhteys)
+                                    pisteet = noppa_peli(pisteet)
+                                    raha_muutos(yhteys, pisteet)
+                                    print(f"You now have {pisteet}€ to spend.")
+                                    time.sleep(2)
+                                    break
+
+                                elif game_choice == "2":
+                                    pisteet = raha_saldo(yhteys)
+                                    pisteet = tietokilpailu_peli(pisteet)
+                                    raha_muutos(yhteys, pisteet)
+                                    print(f"You now have {pisteet}€ to spend.")
+                                    time.sleep(2)
+                                    break
+
+                                else:
+                                    print("❌ Invalid option, please try again.\n")
+
+                        elif earn_choice == "2":
+                            print("You are exiting now back to the main menu.")
+                            time.sleep(2)
+                            return
+                        else:
+                            print("❌ Invalid option, please try again.\n")
 
                 coords_current = (current_airport[3], current_airport[4])
                 coords_dest = (lat, lon)
@@ -97,7 +144,8 @@ def peli(yhteys):
                             if raha >= 100:
                                 palkki()
                                 update_fuel(yhteys, 240000)
-                                update_raha(yhteys, pisteet=-100)  # refill fuel
+                                uusi_raha = raha - 100
+                                update_raha(yhteys, uusi_raha)
                                 print("✅ Refueled! Ready for flight.\n")
                                 current_fuel = get_current_fuel(yhteys)
                                 break
@@ -155,7 +203,8 @@ def peli(yhteys):
                 update_flight_count(yhteys, flight_count)
 
                 print(f"💸 Flight cost: {flight_cost}€")
-                update_raha(yhteys, -flight_cost)
+                uusi_raha = raha - flight_cost
+                raha_muutos(yhteys, uusi_raha)
 
                 current_airport = valittu
                 update_current_airport(yhteys, valittu[0])

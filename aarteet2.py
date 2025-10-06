@@ -24,8 +24,8 @@ def airport_event(yhteys):
         kursori = yhteys.cursor()
         kursori.execute(sql, (TREASURES[satunnainen_avain], 1))
         yhteys.commit()
-        print(f"Löysit aarteen: {item} joka on {TREASURES[satunnainen_avain]}€ arvoinen! Summa talletetaan tilillesi")
-        return TREASURES[satunnainen_avain]
+        tulos = print(f"Löysit aarteen: {item} joka on {TREASURES[satunnainen_avain]}€ arvoinen! Summa talletetaan tilillesi")
+        return tulos
 
     elif roll < treasure_chance + robbed_chance:
 
@@ -33,11 +33,11 @@ def airport_event(yhteys):
         kursori = yhteys.cursor()
         kursori.execute(sql)
         yhteys.commit()
-        print("Ryöstö! Menetit 10% rahoistasi.")
-        return TREASURES[satunnainen_avain]
+        tulos = print("Ryöstö! Menetit 10% rahoistasi.")
+        return tulos
     else:
-        print("Ei satunnaista tapahtumaa.")
-        return None
+        tulos = print("Ei satunnaista tapahtumaa.")
+        return tulos
 
 #funktion suoritus
 # tapahtuma = airport_event()

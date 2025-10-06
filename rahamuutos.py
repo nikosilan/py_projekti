@@ -6,10 +6,20 @@ from log_in import kirjautuminen
 
 # päivittää rahasaldoa tietokantaan
 def raha_muutos(yhteys, raha_muutos):
-    sql = "UPDATE game SET raha = raha + %s WHERE id = %s;"
     kursori = yhteys.cursor()
-    kursori.execute(sql, (raha_muutos, 1))
-    return kursori.rowcount
+
+    # varmista että raha ei ole NULL
+    sql_select = "SELECT COALESCE(raha, 0) FROM game WHERE id = 1;"
+    kursori.execute(sql_select)
+    tulos = kursori.fetchone()
+    nykyinen_raha = tulos[0] if tulos else 0
+
+    uusi_raha = max(0, nykyinen_raha + raha_muutos)
+
+    sql_update = "UPDATE game SET raha = %s WHERE id = 1;"
+    kursori.execute(sql_update, (uusi_raha,))
+    yhteys.commit()
+    kursori.close()
 
 # hakee tiedon paljon sinulla on rahaa tilillä
 def raha_saldo(yhteys):
