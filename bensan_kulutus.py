@@ -1,13 +1,13 @@
 from geopy.distance import geodesic
 import mysql.connector
-yhteys = mysql.connector.connect(
+'''yhteys = mysql.connector.connect(
     host='127.0.0.1',
     port=3306,
     database='flight_game',
     user='Daniel',
     password='DA10',
     autocommit=True
-)
+)'''
 
 # oletetaan meillä on dictionary of aircraft bensan kulutus per 100 km
 aircraft_fuel_burn = {
@@ -100,4 +100,4 @@ def fly_between_airports(conn):
         print("Error updating fuel.")
 
 
-fly_between_airports(yhteys)
+# fly_between_airports(yhteys)
