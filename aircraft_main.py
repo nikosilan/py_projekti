@@ -23,7 +23,6 @@ from noppa2 import get_raha, noppa_peli, update_raha
 
 yhteys = kirjautuminen()
 
-flight_count = 0
 current_airport = get_airport_info("EFHK", yhteys)
 if not current_airport:
     print("Error: EFHK not found in database!")
@@ -62,7 +61,7 @@ def main():
 
             if choice == "1":
                 print("Starting game...")
-                flight_count, current_airport = peli(yhteys, flight_count, current_airport)
+                current_airport = peli(yhteys, current_airport)
 
 
             elif choice == "2":
@@ -70,7 +69,7 @@ def main():
                     confirm_choice = input(
                         "You are about to make a new player. Your default changes will be wiped if you"
                         "\ndecide to overwrite the existing player. Are you sure? (y/n)"
-                        "\n>")
+                        "\n> ")
                     if confirm_choice.lower() == "y":
                         nimi = input("Your new name (max 20): ")
                         nimea_hahmo(yhteys, nimi, hahmo_id=1)

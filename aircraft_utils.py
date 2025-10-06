@@ -2,6 +2,24 @@ import mysql.connector
 from aircraft_lista import search_for_open_destinations
 
 
+def get_flight_count(yhteys, hahmo_id=1):
+    kursori = yhteys.cursor()
+    sql = "SELECT flights FROM game WHERE id = %s"
+    kursori.execute(sql, (hahmo_id,))
+    result = kursori.fetchone()
+    kursori.close()
+    if result:
+        return result[0]
+
+def update_flight_count(yhteys, flight_count, hahmo_id=1):
+    kursori = yhteys.cursor()
+    sql = "UPDATE game SET flights = %s WHERE id = %s"
+    kursori.execute(sql, (flight_count, hahmo_id))
+    yhteys.commit()
+    kursori.close()
+    return kursori.rowcount  # returns number of rows updated
+
+
 def get_airport_info(icao_code, conn):
     cursor = conn.cursor()
     cursor.execute("""

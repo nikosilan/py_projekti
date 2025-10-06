@@ -3,7 +3,7 @@ import os
 import time
 from geopy.distance import geodesic
 from aircraft_config import aircraft, aircraft_fuel_burn, FUEL_DENSITY, CO2_EMISSION_FACTOR
-from aircraft_utils import get_airport_info, get_current_fuel, update_fuel, random_destination
+from aircraft_utils import get_airport_info, get_current_fuel, update_fuel, random_destination, get_flight_count, update_flight_count
 from aircraft_lista import tulosta_numeroitu_lista, search_for_open_destinations
 
 from lataus import palkki
@@ -19,9 +19,11 @@ from rahamuutos import raha_saldo, raha_muutos
 # yhteys = kirjautuminen()
 
 
-def peli(yhteys, flight_count, current_airport):
+def peli(yhteys, current_airport):
     total_distance = 0
     total_emissions = 0
+    flight_count = get_flight_count(yhteys, hahmo_id=1)
+    print(f"Your flight are {flight_count}")
 
     # Lentojen hinta
     if flight_count == 0:
@@ -144,6 +146,7 @@ def peli(yhteys, flight_count, current_airport):
                 total_distance += distance
                 total_emissions += co2_emissions
                 flight_count += 1
+                update_flight_count(yhteys, flight_count)
 
                 print(f"💸 Flight cost: {flight_cost}€")
                 update_raha(yhteys, -flight_cost)
@@ -199,12 +202,12 @@ def peli(yhteys, flight_count, current_airport):
             elif continue_choice == "2":
                 print("\nLoading another pack of flights available just for you!")
                 time.sleep(2)
-                return peli(yhteys, flight_count, current_airport)
+                return peli(yhteys, current_airport)
 
             elif continue_choice == "3":
                 print("Returning to main menu...")
                 time.sleep(2)
-                return flight_count, current_airport
+                return current_airport
 
             else:
                 print("❌ Invalid option, please try again.")
