@@ -15,6 +15,8 @@ from aarteet2 import airport_event
 
 from rahamuutos import raha_saldo, raha_muutos
 
+from huolto2 import aircraft_huolto
+
 # from log_in import kirjautuminen
 # yhteys = kirjautuminen()
 
@@ -212,6 +214,7 @@ def peli(yhteys):
                 current_airport = valittu
                 update_current_airport(yhteys, valittu[0])
                 print(f"📍 You are now at {current_airport[1]} ({current_airport[0]}) in {current_airport[2]}.")
+                aircraft_huolto(yhteys)
             else:
                 print("❌ Choose 1, 2, or 3.")
         except ValueError:
