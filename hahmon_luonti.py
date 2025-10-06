@@ -20,14 +20,15 @@ def nimea_hahmo(yhteys, nimi, hahmo_id=1):
     # Lisää tai päivitä pelaaja id=1
     # INSERT INTO on melko sama kuin UPDATE
     # ON DUPLICATE KEY UPDATE tarkoittaa jos on olemassa jo id=1 pelaaja, se poistetaan ja luodaan uusi pelaaja
-    sql = ("INSERT INTO game (id, screen_name, bensa, raha, flights) "
-           "VALUES (%s, %s, %s, %s, %s) "
+    sql = ("INSERT INTO game (id, screen_name, bensa, raha, flights, sijainti) "
+           "VALUES (%s, %s, %s, %s, %s, %s) "
            "ON DUPLICATE KEY UPDATE "
            "screen_name = VALUES(screen_name), "
            "bensa = VALUES(bensa), "
            "raha = VALUES(raha), "
-           "flights = VALUES(flights);")
-    kursori.execute(sql, (hahmo_id, nimi, 240000, 100, 0))
+           "flights = VALUES(flights), "
+           "sijainti = VALUES(sijainti);")
+    kursori.execute(sql, (hahmo_id, nimi, 240000, 100, 0, "EFHK"))
 
     yhteys.commit()
     print(f"Player '{nimi}' created/updated: 240000 fuel, 100€ money and 0 flights.")

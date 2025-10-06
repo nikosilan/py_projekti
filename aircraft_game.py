@@ -3,7 +3,7 @@ import os
 import time
 from geopy.distance import geodesic
 from aircraft_config import aircraft, aircraft_fuel_burn, FUEL_DENSITY, CO2_EMISSION_FACTOR
-from aircraft_utils import get_airport_info, get_current_fuel, update_fuel, random_destination, get_flight_count, update_flight_count
+from aircraft_utils import get_airport_info, get_current_fuel, update_fuel, random_destination, get_flight_count, update_flight_count, get_current_airport, update_current_airport
 from aircraft_lista import tulosta_numeroitu_lista, search_for_open_destinations
 
 from lataus import palkki
@@ -19,11 +19,16 @@ from rahamuutos import raha_saldo, raha_muutos
 # yhteys = kirjautuminen()
 
 
-def peli(yhteys, current_airport):
+def peli(yhteys):
     total_distance = 0
     total_emissions = 0
+
     flight_count = get_flight_count(yhteys, hahmo_id=1)
-    print(f"Your flight are {flight_count}")
+
+    current_airport = get_current_airport(yhteys)
+    if not current_airport:
+        print("⚠️ Current airport not set. Defaulting to EFHK.")
+        current_airport = ("EFHK", "Helsinki Airport", "Finland")
 
     # Lentojen hinta
     if flight_count == 0:
@@ -57,7 +62,7 @@ def peli(yhteys, current_airport):
             print(f"Total CO₂ emissions: {total_emissions:.1f} kg")
             print("Returning you back to main menu... \n")
             time.sleep(2)
-            return flight_count, current_airport
+            return
 
         try:
             choice = int(choice)
@@ -152,6 +157,7 @@ def peli(yhteys, current_airport):
                 update_raha(yhteys, -flight_cost)
 
                 current_airport = valittu
+                update_current_airport(yhteys, valittu[0])
                 print(f"📍 You are now at {current_airport[1]} ({current_airport[0]}) in {current_airport[2]}.")
             else:
                 print("❌ Choose 1, 2, or 3.")
@@ -202,12 +208,12 @@ def peli(yhteys, current_airport):
             elif continue_choice == "2":
                 print("\nLoading another pack of flights available just for you!")
                 time.sleep(2)
-                return peli(yhteys, current_airport)
+                return peli(yhteys)
 
             elif continue_choice == "3":
                 print("Returning to main menu...")
                 time.sleep(2)
-                return current_airport
+                return
 
             else:
                 print("❌ Invalid option, please try again.")

@@ -54,14 +54,14 @@ def stats(yhteys):
         print("⚠️ No player data found.")
 
 def main():
-    global flight_count, current_airport
+    global current_airport
     try:
         while True:
             choice = menu()
 
             if choice == "1":
                 print("Starting game...")
-                current_airport = peli(yhteys, current_airport)
+                peli(yhteys)
 
 
             elif choice == "2":

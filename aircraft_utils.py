@@ -19,6 +19,27 @@ def update_flight_count(yhteys, flight_count, hahmo_id=1):
     kursori.close()
     return kursori.rowcount  # returns number of rows updated
 
+def get_current_airport(yhteys, hahmo_id=1):
+    cursor = yhteys.cursor()
+    sql = """
+    SELECT airport.ident, airport.name, country.name, airport.latitude_deg, airport.longitude_deg
+    FROM game
+    JOIN airport ON game.sijainti = airport.ident
+    JOIN country ON airport.iso_country = country.iso_country
+    WHERE game.id = %s
+    """
+    cursor.execute(sql, (hahmo_id,))
+    result = cursor.fetchone()
+    cursor.close()
+    return result
+
+
+def update_current_airport(yhteys, uusi_icao, hahmo_id=1):
+    cursor = yhteys.cursor()
+    sql = "UPDATE game SET sijainti = %s WHERE id = %s"
+    cursor.execute(sql, (uusi_icao, hahmo_id))
+    yhteys.commit()
+    cursor.close()
 
 def get_airport_info(icao_code, conn):
     cursor = conn.cursor()
