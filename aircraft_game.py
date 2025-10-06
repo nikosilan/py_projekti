@@ -24,6 +24,7 @@ def peli(yhteys):
     total_emissions = 0
 
     flight_count = get_flight_count(yhteys, hahmo_id=1)
+    raha = raha_saldo(yhteys)
 
     current_airport = get_current_airport(yhteys)
     if not current_airport:
@@ -164,7 +165,8 @@ def peli(yhteys):
         except ValueError:
             print("❌ Enter a number (1-3) or q to quit.")
 
-        airport_event(yhteys)
+        tapahtuma = airport_event(yhteys)
+        update_raha(yhteys, tapahtuma)
         time.sleep(2)
         print("\n")
         while True:  # continue-choice loop

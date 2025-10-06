@@ -15,7 +15,7 @@ from rahamuutos import raha_muutos
 
 from hahmon_luonti import nimea_hahmo
 
-#from lentokone_data import peli
+# from lentokone_data import peli
 
 from aircraft_game import peli
 
