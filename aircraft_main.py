@@ -5,7 +5,7 @@ from aircraft_config import aircraft, aircraft_fuel_burn, FUEL_DENSITY, CO2_EMIS
 from aircraft_utils import get_airport_info, get_current_fuel, update_fuel, random_destination
 from aircraft_lista import tulosta_numeroitu_lista, search_for_open_destinations
 
-#from noppa import noppa_peli
+
 from tieto_kilpailu import tietokilpailu_peli
 
 from lataus import palkki
@@ -15,7 +15,7 @@ from rahamuutos import raha_muutos
 
 from hahmon_luonti import nimea_hahmo
 
-# from lentokone_data import peli
+
 
 from aircraft_game import peli
 

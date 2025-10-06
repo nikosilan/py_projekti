@@ -6,7 +6,7 @@ from aircraft_config import aircraft, aircraft_fuel_burn, FUEL_DENSITY, CO2_EMIS
 from aircraft_utils import get_airport_info, get_current_fuel, update_fuel, random_destination, get_flight_count, update_flight_count, get_current_airport, update_current_airport
 from aircraft_lista import tulosta_numeroitu_lista, search_for_open_destinations
 
-from lataus import palkki
+
 
 from noppa2 import get_raha, update_raha, noppa_peli
 from tieto_kilpailu import tietokilpailu_peli
@@ -17,8 +17,7 @@ from rahamuutos import raha_saldo, raha_muutos
 
 from huolto2 import aircraft_huolto
 
-# from log_in import kirjautuminen
-# yhteys = kirjautuminen()
+
 
 
 def peli(yhteys):

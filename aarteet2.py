@@ -1,7 +1,7 @@
 import random
-# from log_in import kirjautuminen
 
-# yhteys = kirjautuminen()
+
+#aarteet ja niiden arvot
 
 TREASURES = {"€10 seteli": 10,
              "€20 seteli": 20,
@@ -12,14 +12,18 @@ treasures_avaimet = ["€10 seteli", "€20 seteli", "koru", "matkamuisto"]
 random.shuffle(treasures_avaimet)
 satunnainen_avain = treasures_avaimet[0]
 
-def airport_event(yhteys):
-    treasure_chance = 0.15  # 15% mahdollisuus löytää aarre
-    robbed_chance = 0.10    # 10% mahdollisuus tulla ryöstetyksi
+#määritellään tapahtumien mahdollisuudet
 
+def airport_event(yhteys):
+    treasure_chance = 0.15  
+    robbed_chance = 0.10    
+
+#arvotaan 
     roll = random.random()
     if roll < treasure_chance:
         item = satunnainen_avain
 
+        #päivitetän rahasaldo tietokantaan
         sql = "UPDATE game SET raha = raha + %s WHERE id = %s;"
         kursori = yhteys.cursor()
         kursori.execute(sql, (TREASURES[satunnainen_avain], 1))
@@ -28,7 +32,7 @@ def airport_event(yhteys):
         return tulos
 
     elif roll < treasure_chance + robbed_chance:
-
+        #päivitetään raha 10% pienemmäksi
         sql = "UPDATE game SET raha = raha * 0.9 WHERE id = 1;"
         kursori = yhteys.cursor()
         kursori.execute(sql)
@@ -39,8 +43,3 @@ def airport_event(yhteys):
         tulos = print("Ei satunnaista tapahtumaa.")
         return tulos
 
-#funktion suoritus
-# tapahtuma = airport_event()
-
-# print(f"Saavuit lentokentälle: {airport}")
-# print(f"Tapahtuma: {tapahtuma}")
