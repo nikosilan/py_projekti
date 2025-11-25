@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+    <meta charset="UTF-8">
+    <title>Yksinkertainen frontti</title>
+</head>
+<body>
+    <h1>Tämä on frontti</h1>
+    <p>Backendissa on API osoitteessa <code>/api/tervehdys</code>.</p>
+
+    <h3>Hae viesti backistä:</h3>
+    <button onclick="hae()">Hae</button>
+
+    <p id="tulos"></p>
+
+    <script>
+        async function hae() {
+            const res = await fetch("/api/tervehdys");
+            const text = await res.text();
+            document.getElementById("tulos").innerText = text;
+        }
+    </script>
+</body>
+</html>
