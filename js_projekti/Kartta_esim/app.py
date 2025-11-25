@@ -3,17 +3,17 @@ import os
 
 app = Flask(__name__)
 
-# Palvele etusivu
+# Palvelin etusivu
 @app.route("/")
 def home():
     return send_from_directory(os.getcwd(), "index.html")
 
-# Palvele CSS
+# Palvelin CSS
 @app.route("/style.css")
 def css():
     return send_from_directory(os.getcwd(), "style.css")
 
-# Palvele JS
+# Palvelin JS
 @app.route("/app.js")
 def js():
     return send_from_directory(os.getcwd(), "app.js")

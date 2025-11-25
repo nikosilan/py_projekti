@@ -1,4 +1,4 @@
-// Luo Leaflet-kartta
+// Leaflet-kartta
 var map = L.map('map').setView([60.1699, 24.9384], 6);
 
 // OpenStreetMap layer
