@@ -1,26 +1,33 @@
-// Leaflet-kartta
-var map = L.map('map').setView([60.1699, 24.9384], 6);
+// Leaflet-kartan alustus
+const map = L.map('map').setView([60.1699, 24.9384], 6);
 
-// OpenStreetMap layer
+// OpenStreetMap-laatta
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '© OpenStreetMap'
 }).addTo(map);
 
-// Klikkaus kartalla
-map.on('click', async function(e) {
-    const lat = e.latlng.lat;
-    const lon = e.latlng.lng;
+// Käyttäjän sijainti markerina
+if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(pos => {
+        const lat = pos.coords.latitude;
+        const lon = pos.coords.longitude;
 
-    const res = await fetch("/api/saa", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ lat, lon })
+        L.marker([lat, lon], { title: "Sijaintisi" })
+            .addTo(map)
+            .bindPopup("📍 Olet tässä");
+
+        map.setView([lat, lon], 9);
     });
+}
 
-    const data = await res.json();
-
-    document.getElementById("saaInfo").innerText =
-        `Sijainti: ${lat.toFixed(2)}, ${lon.toFixed(2)}\n` +
-        `Sää: ${data.saa}\n` +
-        `Lämpötila: ${data.lampotila} °C`;
-});
+// Hae lentokentät backendista
+fetch("http://127.0.0.1:5000/api/airports")
+    .then(res => res.json())
+    .then(airports => {
+        airports.forEach(ap => {
+            L.marker([ap.lat, ap.lon])
+                .addTo(map)
+                .bindPopup(`<b>${ap.name}</b><br>ICAO: ${ap.icao}<br>Maa: ${ap.country}`);
+        });
+    })
+    .catch(err => console.error("Lentokenttien haku epäonnistui:", err));
