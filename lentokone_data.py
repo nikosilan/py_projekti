@@ -14,6 +14,7 @@ CO2_EMISSION_FACTOR = 3.16  # kg CO₂ per kg fuel
 
 
 def get_airport_info(icao_code, conn):
+    print("hevonen")
     cursor = conn.cursor()
     cursor.execute("""
         SELECT ident, name, iso_country, latitude_deg, longitude_deg
@@ -22,7 +23,9 @@ def get_airport_info(icao_code, conn):
     """, (icao_code,))
     result = cursor.fetchone()
     cursor.close()
-    return result  # (icao, name, country, lat, lon)
+    print("123")
+    print(result)  # (icao, name, country, lat, lon)
+
 
 def get_current_fuel(conn):
     cursor = conn.cursor()

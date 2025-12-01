@@ -12,7 +12,7 @@ def airport_event():
         item = random.choice(TREASURES)
         return f"Löysit aarteen: {item}!"
     elif roll < treasure_chance + robbed_chance:
-        return "Ryöstö! Menetit jotain arvokasta."
+        return "Ryöstö! Menetit 10% rahoistasi."
     else:
         return "Ei tapahtumaa."
 

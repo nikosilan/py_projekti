@@ -1,0 +1,1 @@
+"Hei! Tervetuloa pelaamaan lentopeliä. Pelissä tavoitteena on lentää ympäri maailmaa ja suorittaa tehtäviä."
