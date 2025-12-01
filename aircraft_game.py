@@ -3,19 +3,15 @@ import os
 import time
 from geopy.distance import geodesic
 from aircraft_config import aircraft, aircraft_fuel_burn, FUEL_DENSITY, CO2_EMISSION_FACTOR
-from aircraft_utils import get_airport_info, get_current_fuel, update_fuel, random_destination, get_flight_count, update_flight_count, get_current_airport, update_current_airport
-from aircraft_lista import tulosta_numeroitu_lista, search_for_open_destinations
+# from aircraft_utils import get_airport_info, get_current_fuel, update_fuel, random_destination, get_flight_count, update_flight_count, get_current_airport, update_current_airport
+# from aircraft_lista import tulosta_numeroitu_lista, search_for_open_destinations
+# from noppa2 import get_raha, update_raha, noppa_peli
+# from tieto_kilpailu import tietokilpailu_peli
+# from aarteet2 import airport_event
+# from rahamuutos import raha_saldo, raha_muutos
+# from huolto2 import aircraft_huolto
 
-
-
-from noppa2 import get_raha, update_raha, noppa_peli
-from tieto_kilpailu import tietokilpailu_peli
-
-from aarteet2 import airport_event
-
-from rahamuutos import raha_saldo, raha_muutos
-
-from huolto2 import aircraft_huolto
+from aircraft_utils import GameState, Airport, Minigames, Events
 
 
 
@@ -25,10 +21,10 @@ def peli(yhteys):
     total_emissions = 0 #CO2- päästöt
 
 
-    flight_count = get_flight_count(yhteys, hahmo_id=1)
+    flight_count = GameState.get_flight_count(yhteys, hahmo_id=1)
 
     #haetaan nykyinen lentokenttä
-    current_airport = get_current_airport(yhteys)
+    current_airport = Airport.get_current_airport(yhteys)
     if not current_airport:
         print("⚠️ Current airport not set. Defaulting to EFHK.")
         current_airport = ("EFHK", "Helsinki Airport", "Finland")
@@ -53,14 +49,14 @@ def peli(yhteys):
 
     while True:
         #rahatilanne
-        raha = raha_saldo(yhteys)
+        raha = GameState.raha_saldo(yhteys)
         #lähtökentän tiedot
         print(f"\n🌍 Welcome! Starting at {current_airport[1]} ({current_airport[0]}) in {current_airport[2]}.")
         print(f"Your aircraft: {aircraft}\n")
         print(f"The price of the flight is: {flight_cost}€\n")
         #arvotaan lentokenttäkohteet
-        kohteet = random_destination(yhteys, flight_count)
-        tulosta_numeroitu_lista(kohteet)
+        kohteet = GameState.random_destination(yhteys, flight_count)
+        GameState.tulosta_numeroitu_lista(kohteet)
 
         choice = input("\nChoose destination (1-3) or q to quit: ")
         if choice.lower() == "q":
@@ -77,7 +73,7 @@ def peli(yhteys):
                 valittu = kohteet[choice - 1]
                 icao, name, country, lat, lon = valittu
                 #onko tarpeeksi rahaa
-                raha = raha_saldo(yhteys)
+                raha = GameState.raha_saldo(yhteys)
                 if raha < flight_cost:
                     #pelaaja voi ansaita rahaa tai peru lento
                     while True:
@@ -87,10 +83,10 @@ def peli(yhteys):
                         print(f"❌ Not enough money for this flight! Flight cost: {flight_cost}€, you have: {raha}€")
                         print("Earn more money before flying.\n")
                         time.sleep(2)
-                        earn_choice = input(
-                            "Do you want to earn more money or do you want to exit to the menu?\n"
+                        print("Do you want to earn more money or do you want to exit to the menu?\n"
                             "1. Earn money\n"
-                            "2. Exit to menu\n"
+                            "2. Exit to menu\n")
+                        earn_choice = input(
                             "> "
                         )
                         #mini-pelien valinta
@@ -104,18 +100,17 @@ def peli(yhteys):
                                 )
                                 #käytetään valittua peliä ja päivitetään raha
                                 if game_choice == "1":
-                                    reward = noppa_peli(raha)
-                                    raha_muutos(yhteys, reward)
-                                    raha = raha_saldo(yhteys)
+                                    reward = Minigames.noppa_peli(raha)
+                                    GameState.raha_muutos(yhteys, reward)
+                                    raha = GameState.raha_saldo(yhteys)
                                     print(f"You now have {raha}€ to spend.")
                                     time.sleep(2)
                                     break
 
                                 elif game_choice == "2":
-
-                                    reward = tietokilpailu_peli(raha)
-                                    raha_muutos(yhteys, reward)
-                                    raha = raha_saldo(yhteys)
+                                    reward = Minigames.tietokilpailu_peli(raha)
+                                    GameState.raha_muutos(yhteys, reward)
+                                    raha = GameState.raha_saldo(yhteys)
                                     print(f"You now have {raha}€ to spend.")
                                     time.sleep(2)
                                     break
@@ -137,7 +132,7 @@ def peli(yhteys):
 
                 fuel_needed = (distance / 100) * aircraft_fuel_burn
                 #nykyinen polttoainemäärä
-                current_fuel = get_current_fuel(yhteys)
+                current_fuel = Airport.get_current_fuel(yhteys)
                 if current_fuel is None:
                     print("Player fuel not found in DB.")
                     return
@@ -155,12 +150,12 @@ def peli(yhteys):
                         )
 
                         if fuel_choice == "1":
-                            raha = raha_saldo(yhteys)
+                            raha = GameState.raha_saldo(yhteys)
                             if raha >= 100:
                                 print("Refueling the aircraft...")
                                 time.sleep(3)
-                                update_fuel(yhteys, 240000)
-                                raha_muutos(yhteys, -100)
+                                Airport.update_fuel(yhteys, 240000)
+                                GameState.raha_muutos(yhteys, -100)
                                 print("✅ Refueled! Ready for flight.\n")
                                 current_fuel = 240000
                                 break
@@ -179,17 +174,17 @@ def peli(yhteys):
                                 )
 
                                 if game_choice == "1":
-                                    reward = noppa_peli(raha)
-                                    raha_muutos(yhteys, reward)
-                                    raha = raha_saldo(yhteys)
+                                    reward = Minigames.noppa_peli(raha)
+                                    GameState.raha_muutos(yhteys, reward)
+                                    raha = GameState.raha_saldo(yhteys)
                                     print(f"You now have {raha}€ to spend.")
                                     time.sleep(2)
                                     break
 
                                 elif game_choice == "2":
-                                    reward = tietokilpailu_peli(raha)
-                                    raha_muutos(yhteys, reward)
-                                    raha = raha_saldo(yhteys)
+                                    reward = Minigames.tietokilpailu_peli(raha)
+                                    GameState.raha_muutos(yhteys, reward)
+                                    raha = GameState.raha_saldo(yhteys)
                                     print(f"You now have {raha}€ to spend.")
                                     time.sleep(2)
                                     break
@@ -202,7 +197,7 @@ def peli(yhteys):
                         else:
                             print("❌ Invalid option, please try again.\n")
                 #päivitetään polttoaine määrä
-                update_fuel(yhteys, -fuel_needed)
+                Airport.update_fuel(yhteys, -fuel_needed)
                 #näytetään lennon tiedot
                 print(f"\n🛫 Flight {flight_count + 1}:")
                 print(f"From {current_airport[1]} to {name} airport = {distance:.1f} km")
@@ -215,22 +210,22 @@ def peli(yhteys):
                 total_distance += distance
                 total_emissions += co2_emissions
                 flight_count += 1
-                update_flight_count(yhteys, flight_count)
+                GameState.update_flight_count(yhteys, flight_count)
                 #veloitetaan lennon hinta
                 print(f"💸 Flight cost: {flight_cost}€")
-                raha_muutos(yhteys, -flight_cost)
+                GameState.raha_muutos(yhteys, -flight_cost)
                 #päivitetään nykyinen lentokenttä
                 current_airport = valittu
-                update_current_airport(yhteys, valittu[0])
+                Airport.update_current_airport(yhteys, valittu[0])
                 print(f"📍 You are now at {current_airport[1]} ({current_airport[0]}) in {current_airport[2]}.")
                 #tarkistetaan huollon tarve
-                aircraft_huolto(yhteys)
+                Events.aircraft_huolto(yhteys)
             else:
                 print("❌ Choose 1, 2, or 3.")
         except ValueError:
             print("❌ Enter a number (1-3) or q to quit.")
         #satunnainen lentokenttätapahtuma
-        airport_event(yhteys)
+        Events.airport_event(yhteys)
         time.sleep(2)
         print("\n")
         while True:  # continue-choice loop
@@ -253,17 +248,17 @@ def peli(yhteys):
                     )
 
                     if game_choice == "1":
-                        reward = noppa_peli(raha)
-                        raha_muutos(yhteys, reward)
-                        raha = raha_saldo(yhteys)
+                        reward = Minigames.noppa_peli(raha)
+                        GameState.raha_muutos(yhteys, reward)
+                        raha = GameState.raha_saldo(yhteys)
                         print(f"You now have {raha}€ to spend.")
                         time.sleep(2)
                         break
 
                     elif game_choice == "2":
-                        reward = tietokilpailu_peli(raha)
-                        raha_muutos(yhteys, reward)
-                        raha = raha_saldo(yhteys)
+                        reward = Minigames.tietokilpailu_peli(raha)
+                        GameState.raha_muutos(yhteys, reward)
+                        raha = GameState.raha_saldo(yhteys)
                         print(f"You now have {raha}€ to spend.")
                         time.sleep(2)
                         break

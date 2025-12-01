@@ -1,43 +1,26 @@
 from log_in import kirjautuminen
 import sys
 import time
-from aircraft_config import aircraft, aircraft_fuel_burn, FUEL_DENSITY, CO2_EMISSION_FACTOR
-from aircraft_utils import get_airport_info, get_current_fuel, update_fuel, random_destination
-from aircraft_lista import tulosta_numeroitu_lista, search_for_open_destinations
-
-
-from tieto_kilpailu import tietokilpailu_peli
-
 from lataus import palkki
-
-from rahamuutos import raha_saldo
-from rahamuutos import raha_muutos
-
-from hahmon_luonti import nimea_hahmo
-
-
-
+from aircraft_utils import GameState, Airport
 from aircraft_game import peli
-
-from noppa2 import get_raha, noppa_peli, update_raha
-
 yhteys = kirjautuminen()
 palkki()
 
-current_airport = get_airport_info("EFHK", yhteys)
+current_airport = Airport.get_airport_info("EFHK", yhteys)
 if not current_airport:
     print("Error: EFHK not found in database!")
 
 def menu():
     #tulostaa päävalikon ja palauttaa käyttäjän valinnan
-    choice = input(
-        "Welcome to Aircraft game! This is the menu of this game."
+    print("Welcome to Aircraft game! This is the menu of this game."
         "\nPlease choose the option to proceed:"
         "\n1. Start game"
         "\n2. Create new player"
         "\n3. Player stats"
-        "\n4. Exit game"
-        "\n> "
+        "\n4. Exit game")
+    choice = input(
+        "> "
     )
     return choice
 
@@ -76,7 +59,7 @@ def main():
                         "\n> ")
                     if confirm_choice.lower() == "y":
                         nimi = input("Your new name (max 20): ")
-                        nimea_hahmo(yhteys, nimi, hahmo_id=1)
+                        GameState.nimea_hahmo(yhteys, nimi, hahmo_id=1)
                         break  # exit loop after creating new player
                     elif confirm_choice.lower() == "n":
                         print("Returning you back to the main menu.")
