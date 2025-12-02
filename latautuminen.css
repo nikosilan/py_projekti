@@ -1,0 +1,99 @@
+body {
+    margin: 0;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  background: linear-gradient(to bottom, #0b3d91, #87CEEB);
+
+    font-family: Arial, sans-serif;
+    color: white;
+    flex-direction: column;
+}
+
+.loading-screen {
+    text-align: center;
+    width: 80%;
+}
+
+.start-button {
+    padding: 15px 30px;
+    font-size: 60px;
+    cursor: pointer;
+    border: 2px solid white;
+    border-radius: 10px;
+    background: #FF9900;
+    color: white;
+
+    transition: 0.3s;
+    margin-top: 180px;
+}
+
+.start-button:hover {
+    background: rgba(255,255,255,0.2);
+}
+
+.did-you-know {
+    margin-top:70px;
+    font-size: 50px;
+    background: black;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* Progress bar container */
+.progress-bar {
+    width: 100%;
+    max-width: 100%;
+    height: 40px;
+    border: 2px solid white;
+    border-radius: 15px;
+    overflow: hidden;
+    position:relative;
+    margin-top: 250px;
+}
+
+/* Fill bar */
+.bar-fill {
+    width: 0;
+    height: 100%;
+    background: linear-gradient(to right, #00c6ff, #0072ff);
+    border-radius: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    padding-left: 10px;
+    box-sizing: border-box;
+    transition: width 0.3s;
+    box-shadow: 0 0 15px rgba(0, 198, 255, 0.5);
+    position: relative;
+}
+
+/* Plane inside progress bar */
+.plane-inside {
+
+     animation: float 1s ease-in-out infinite alternate;
+     position: absolute;
+    align-items: center;
+    transform: translateY(-50%);
+    left: 0;
+    transition: left 0.2s ease;
+    font-size: 40px;
+}
+@keyframes float {
+    0% { transform: translateY(0px); }
+    100% { transform: translateY(-5px); }
+}
+.bar-fill {
+    height: 100%;
+    background: repeating-linear-gradient(
+        45deg,
+        #4caf50,
+        #4caf50 10px,
+        #3e8e41 10px,
+        #3e8e41 20px
+    );
+    transition: width 0.2s linear;
+}
+
+
