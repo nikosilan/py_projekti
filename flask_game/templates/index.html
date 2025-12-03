@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Aircraft Game</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        #output { white-space: pre-wrap; border: 1px solid #ccc; padding: 10px; height: 400px; overflow-y: auto; background: #f9f9f9; }
+        #choices button { margin: 5px; padding: 10px 20px; }
+    </style>
+</head>
+<body>
+    <h1>Aircraft Game</h1>
+    <div id="output"></div>
+    <div id="choices"></div>
+
+    <script>
+        window.onload = async () => {
+            await fetch("/reset_game", { method: "POST" });
+            await sendChoice();  // start the game
+        };
+
+        async function update() {
+            const response = await fetch("/get_output");
+            const data = await response.json();
+
+            document.getElementById("output").textContent = data.text;
+
+            const choicesDiv = document.getElementById("choices");
+            choicesDiv.innerHTML = "";
+
+            data.choices.forEach(c => {
+                const btn = document.createElement("button");
+                btn.textContent = c;
+                btn.onclick = () => sendChoice(c);
+                choicesDiv.appendChild(btn);
+            });
+        }
+
+        async function sendChoice(choice) {
+            await fetch("/send_input", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ value: choice })
+            });
+
+            update();
+        }
+
+        // Start the game immediately
+        update();
+
+    </script>
+</body>
+</html>
