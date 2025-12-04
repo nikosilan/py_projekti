@@ -4,37 +4,39 @@
     <meta charset="UTF-8">
     <title>Aircraft Game</title>
     <style>
-        body { font-family: Arial, sans-serif; margin: 20px; }
+        body { font-family: Arial, sans-serif; margin: 10px; }
         #output { white-space: pre-wrap; border: 1px solid #ccc; padding: 10px; height: 400px; overflow-y: auto; background: #f9f9f9; }
+        #choices { margin-top: 10px; }
         #choices button { margin: 5px; padding: 10px 20px; }
     </style>
 </head>
 <body>
     <h1>Aircraft Game</h1>
-    <div id="output"></div>
+    <div id="output">Odota peliä…</div>
     <div id="choices"></div>
 
     <script>
-        window.onload = async () => {
-            await fetch("/reset_game", { method: "POST" });
-            await sendChoice();  // start the game
-        };
-
+        // --- Game backend communication ---
         async function update() {
-            const response = await fetch("/get_output");
-            const data = await response.json();
+            try {
+                const response = await fetch("/get_output");
+                const data = await response.json();
 
-            document.getElementById("output").textContent = data.text;
+                // Näytä tekstit
+                document.getElementById("output").textContent = data.text;
 
-            const choicesDiv = document.getElementById("choices");
-            choicesDiv.innerHTML = "";
-
-            data.choices.forEach(c => {
-                const btn = document.createElement("button");
-                btn.textContent = c;
-                btn.onclick = () => sendChoice(c);
-                choicesDiv.appendChild(btn);
-            });
+                // Näytä valintapainikkeet
+                const choicesDiv = document.getElementById("choices");
+                choicesDiv.innerHTML = "";
+                data.choices.forEach(c => {
+                    const btn = document.createElement("button");
+                    btn.textContent = c;
+                    btn.onclick = () => sendChoice(c);
+                    choicesDiv.appendChild(btn);
+                });
+            } catch (err) {
+                console.error("Päivitys epäonnistui:", err);
+            }
         }
 
         async function sendChoice(choice) {
@@ -43,13 +45,46 @@
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ value: choice })
             });
-
             update();
         }
 
-        // Start the game immediately
-        update();
+        async function startGame() {
+            await fetch("/reset_game", { method: "POST" });
+            update();
+        }
 
+        // Aloita peli
+        startGame();
+
+        // --- Kuuntele viestejä kartasta (PostMessage) ---
+        window.addEventListener("message", (event) => {
+            const data = event.data;
+            if (data.action === "chooseAirport") {
+                const from = data.from.name + " (" + data.from.icao + ")";
+                const to = data.to.name + " (" + data.to.icao + ")";
+                const distance = calculateDistance(data.from, data.to);
+
+                const outputDiv = document.getElementById("output");
+                outputDiv.innerHTML = `
+                    <h3>Lentopeli</h3>
+                    <p><b>Lähtö:</b> ${from}</p>
+                    <p><b>Kohde:</b> ${to}</p>
+                    <p><b>Matka:</b> ${distance.toFixed(2)} km</p>
+                `;
+            }
+        });
+
+        // Etäisyyden laskenta
+        function calculateDistance(from, to) {
+            const rad = Math.PI / 180;
+            const R = 6371; // km
+            const dLat = (to.lat - from.lat) * rad;
+            const dLon = (to.lon - from.lon) * rad;
+            const a = Math.sin(dLat/2) ** 2 +
+                      Math.cos(from.lat * rad) * Math.cos(to.lat * rad) * Math.sin(dLon/2) ** 2;
+            const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+            return R * c;
+        }
     </script>
 </body>
 </html>

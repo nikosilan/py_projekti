@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+    <meta charset="UTF-8">
+    <title>Flight Game</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+    <style>
+        body { font-family: Arial, sans-serif; }
+        #map { height: 500px; width: 70%; float: left; }
+        #flightInfo { height: 500px; width: 28%; float: left; margin-left: 2%; 
+                      border: 1px solid #ccc; padding: 0; overflow-y: auto; }
+        #refreshBtn { clear: both; margin-top: 10px; }
+        iframe { width: 100%; height: 100%; border: none; }
+    </style>
+</head>
+<body>
+
+<div id="map"></div>
+<div id="flightInfo">
+    <iframe src="http://127.0.0.1:5001/"></iframe>
+
+" id="gameIframe"></iframe>
+</div>
+
+<button id="refreshBtn">Päivitä kohteet</button>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="kartta.js"></script>
+</body>
+</html>
