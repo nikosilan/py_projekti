@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Name</title>
+    <link rel="stylesheet" href="style.css">
+    <script>
+        function showMessage(msg) {
+            const flashContainer = document.getElementById("flash-container");
+            flashContainer.innerHTML = `<p class="flash">${msg}</p>`;
+        }
+
+        window.onload = function() {
+            // Esimerkki: voit laittaa viestin tänne
+            showMessage("Enter your name");
+        };
+    </script>
+</head>
+<body>
+    <img src="name-change.jpg" height="500" width="900" alt="Name tag picture"/><br>
+
+    <div id="flash-container"></div>
+
+    <form id="nameForm" action="#" method="post" onsubmit="return handleSubmit();">
+        <input type="text" name="name_input" id="name_input" placeholder="Enter name">
+        <input type="submit" value="Submit" id="greet">
+    </form>
+
+    <script>
+        function handleSubmit() {
+            const input = document.getElementById("name_input").value.trim();
+            if (!input || input.length > 20 || input.includes(" ")) {
+                showMessage("Invalid name. Try again.");
+                return false; // Estää lomakkeen lähetyksen
+            }
+            showMessage(`Hello ${input}! Your name has now been saved.`);
+            return false; // Estää lomakkeen lähetyksen
+        }
+    </script>
+</body>
+</html>
