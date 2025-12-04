@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Hahmon luonti</title>
+</head>
+<body>
+
+    <input id="charName" placeholder="Hahmon nimi">
+    <button onclick="sendName()">Tallenna</button>
+
+    <script>
+        async function sendName() {
+            const name = document.getElementById("charName").value;
+
+            const response = await fetch("/update_character", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ name: name })
+            });
+
+            if (response.ok) {
+                alert("Tallennettu!");
+            } else {
+                alert("Virhe tallennuksessa");
+            }
+        }
+    </script>
+
+</body>
+</html>
