@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Quiz</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='test_style.css') }}">
+</head>
+<body>
+    <h1>Quiz</h1>
+    <br>
+    <form id="QuizForm" action="" method="post">
+        <h2>{{ question }}</h2>
+        <input type="hidden" name="question" value="{{ question }}">
+        {% for choice in choices %}
+            <button type="button" class="answerBtn" data-value="{{ choice }}" >
+                {{ choice }}
+            </button>
+            {% if loop.index % 2 == 0 %}
+            <br>
+            {% endif %}
+        {% endfor %}
+    </form>
+
+    <div id="clock"></div>
+
+
+<script>
+    // Haetaan kaikki vastausnapit
+    const buttons = document.querySelectorAll(".answerBtn");
+
+    // Lisätään klikkaus jokaiselle napille
+    buttons.forEach(button => {
+
+        button.addEventListener("click", function () {
+
+            const userAnswer = this.dataset.value; // käyttäjän valinta
+
+            // Lähetetään vastaus backendille
+            fetch("/answer", {
+                method: "POST",
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify({
+                    question: "{{ question }}",
+                    answer: userAnswer
+                })
+            })
+            .then(response => response.json())
+            .then(result => {
+
+                // Estetään napit heti, ettei voi painaa uudelleen
+                buttons.forEach(btn => btn.disabled = true);
+
+                // Käydään kaikki napit läpi ja väritetään ne
+                buttons.forEach(btn => {
+
+                    // Oikea vastaus → vihreäksi
+                    if (btn.dataset.value === result.correct) {
+                        btn.style.backgroundColor = "rgba(0, 200, 0, 0.5)";
+                    }
+
+                    // Käyttäjän väärä vastaus → punaiseksi
+                    if (btn.dataset.value === result.user && !result.correct_is_user) {
+                        btn.style.backgroundColor = "rgba(200, 0, 0, 0.5)";
+                    }
+                });
+            });
+        });
+    });
+
+    // Kello
+    function timeNow() {
+        const time = new Date();
+        document.getElementById("clock").textContent = time.toLocaleTimeString('fi-FI');
+    }
+    setInterval(timeNow, 1000);
+    timeNow();
+
+</script>
+
+</body>
+</html>
