@@ -1,4 +1,8 @@
+
+
+
 let balance = 0;
+let gameOver = false;
 
 // ===== BACKGROUND MUSIC =====
 const bgMusic = document.getElementById("bgMusic");
@@ -10,83 +14,107 @@ function playMusic() {
     }
 }
 
-//  DOM ELEMENTS
+// ===== DOM ELEMENTS =====
 const balanceDiv = document.getElementById("balance");
 const computerDiv = document.getElementById("computer-roll");
 const playerDiv = document.getElementById("player-roll");
 const messageDiv = document.getElementById("message");
-
 const rollBtn = document.getElementById("rollBtn");
 const quitBtn = document.getElementById("quitBtn");
-
 const dice1 = document.getElementById("dice1");
 const dice2 = document.getElementById("dice2");
 
-// Emoji for each dice number (1–6)
+// ORIGINAL NOPPA EMOJIS in an array
 const diceFaces = ["⚀","⚁","⚂","⚃","⚄","⚅"];
 
-// ===== COMPUTER DICE =====
-const computerDice = [
-    Math.floor(Math.random()*6) + 1,
-    Math.floor(Math.random()*6) + 1
-];
+// ===== INITIAL SETUP (computer rolls FRESH every player roll!) =====
+computerDiv.textContent = "";
 
-computerDiv.textContent = "Tietokone heitti: ? ?";
 
-// ===== ROLL BUTTON =====
-rollBtn.addEventListener("click", () => {
-    playMusic(); // ensure music starts on first interaction
+// ===== ROLL FUNCTION (computer rolls uuden nopan each time!) =====
+function rollDice() {
+    if (gameOver || rollBtn.disabled) return;
 
+    playMusic();
     messageDiv.textContent = "";
+    messageDiv.style.color = "";
+    messageDiv.style.fontSize = "";
 
-    dice1.classList.add("rolling");
-    dice2.classList.add("rolling");
+    rollBtn.disabled = true;  // Prevent spam
+
+    // ===== STEP 1: Computer rolls  (new every time!) =====
+    const computerDice = [
+        Math.floor(Math.random() * 6) + 1,
+        Math.floor(Math.random() * 6) + 1
+    ];
+    const computerSum = computerDice[0] + computerDice[1];
 
     let count = 0;
-
     const animation = setInterval(() => {
-        dice1.textContent = diceFaces[Math.floor(Math.random()*6)];
-        dice2.textContent = diceFaces[Math.floor(Math.random()*6)];
+        // Shaking animation (player dice only)
+        dice1.textContent = diceFaces[Math.floor(Math.random() * 6)];
+        dice2.textContent = diceFaces[Math.floor(Math.random() * 6)];
         count++;
 
-        if (count > 10) {
+        if (count > 15) {  // Longer suspense !
             clearInterval(animation);
 
-            dice1.classList.remove("rolling");
-            dice2.classList.remove("rolling");
-
-            // ===== PLAYER REAL ROLL =====
-            const p1 = Math.floor(Math.random()*6) + 1;
-            const p2 = Math.floor(Math.random()*6) + 1;
+            // ===== STEP 2: paljastaan PLAYER roll =====
+            const p1 = Math.floor(Math.random() * 6) + 1;
+            const p2 = Math.floor(Math.random() * 6) + 1;
+            const playerSum = p1 + p2;
 
             dice1.textContent = diceFaces[p1 - 1];
             dice2.textContent = diceFaces[p2 - 1];
+            playerDiv.textContent = `Sinun heittosi: ${p1} ja ${p2} (summa: ${playerSum})`;
 
-            playerDiv.textContent = `Sinun heittosi: ${p1} ja ${p2}`;
+            // ===== STEP 3: paljastaan tietokoneen roll (suspense!) =====
+            computerDiv.textContent = `Tietokone heitti: ${computerDice[0]} ja ${computerDice[1]} (summa: ${computerSum})`;
 
-            // ===== CHECK WIN =====
-            if (p1 === computerDice[0] && p2 === computerDice[1]) {
-                const reward = Math.floor(Math.random()*1000) + 1;
+            // ===== WIN: jos tietokoneen ja pelajaan heittöjen summat täsmasivät !  =====
+            if (playerSum === computerSum) {
+                const reward = Math.floor(Math.random() * 400) + 100;  // 100-500€
                 balance += reward;
-
                 balanceDiv.textContent = `Saldo: ${balance}€`;
-                computerDiv.textContent = `Tietokone heitti: ${computerDice[0]} ja ${computerDice[1]}`;
-                messageDiv.textContent = `🎉 Onnittelut! Saat ${reward}€! 🎉`;
 
-                rollBtn.disabled = true;
-                return;
+                messageDiv.textContent = `🎉 ONNITTELUT! Summat täsmäsivät (${computerSum}) — saat ${reward}€! 🎉`;
+                messageDiv.style.color = "gold";
+                messageDiv.style.fontSize = "1.8em";
+                messageDiv.style.fontWeight = "bold";
+
+                // Lock game instantly
+                gameOver = true;
+                rollBtn.style.opacity = "0.4";
+                rollBtn.style.cursor = "not-allowed";
+
+                setTimeout(() => {
+                    window.location.href = "index.html";
+                }, 4000);  // Extra time to celebrate
+            } else {
+                messageDiv.textContent = `❌ Summat eivät täsmänneet (${playerSum} vs ${computerSum}) — yritä uudelleen!`;
+                messageDiv.style.color = "#ff4444";
+                rollBtn.disabled = false;  // Ready for next round
             }
-
-            messageDiv.textContent = "❌ Ei täsmännyt, yritä uudelleen!";
         }
+    }, 80);  // Fast shake for tension
+}
 
-    }, 100);
-});
+// ===== BUTTONS =====
+rollBtn.addEventListener("click", rollDice);
 
-
-// ===== QUIT BUTTON =====
 quitBtn.addEventListener("click", () => {
+    if (gameOver) return;
+
     playMusic();
-    messageDiv.textContent = `Peli päättyi. Lopullinen saldo: ${balance}€`;
+    gameOver = true;
     rollBtn.disabled = true;
+    rollBtn.style.opacity = "0.4";
+    rollBtn.style.cursor = "not-allowed";
+
+    messageDiv.textContent = `Peli päättyi. Lopullinen saldo: ${balance}€`;
+    messageDiv.style.color = "#000";
+
+    setTimeout(() => {
+        window.location.href = "index.html";
+    }, 2500);
 });
