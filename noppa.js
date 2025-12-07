@@ -72,25 +72,38 @@ function rollDice() {
             computerDiv.textContent = `Tietokone heitti: ${computerDice[0]} ja ${computerDice[1]} (summa: ${computerSum})`;
 
             // ===== WIN: jos tietokoneen ja pelajaan heittöjen summat täsmasivät !  =====
-            if (playerSum === computerSum) {
-                const reward = Math.floor(Math.random() * 400) + 100;  // 100-500€
-                balance += reward;
-                balanceDiv.textContent = `Saldo: ${balance}€`;
+          if (playerSum === computerSum) {
+    const reward = Math.floor(Math.random() * 400) + 100;  // 100-500€
+    balance += reward;
+    balanceDiv.textContent = `Saldo: ${balance}€`;
 
-                messageDiv.textContent = `🎉 ONNITTELUT! Summat täsmäsivät (${computerSum}) — saat ${reward}€! 🎉`;
-                messageDiv.style.color = "gold";
-                messageDiv.style.fontSize = "1.8em";
-                messageDiv.style.fontWeight = "bold";
+    // ===== SEND TO BACKEND =====
+    fetch("http://localhost:5000/api/save-prize", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+            player_name: "Player1",
+            prize: reward
+        })
+    })
+    .then(res => res.json())
+    .then(data => console.log(data.message))
+    .catch(err => console.error(err));
 
-                // Lock game instantly
-                gameOver = true;
-                rollBtn.style.opacity = "0.4";
-                rollBtn.style.cursor = "not-allowed";
+    messageDiv.textContent = `🎉 ONNITTELUT! Summat täsmäsivät (${computerSum}) — saat ${reward}€! 🎉`;
+    messageDiv.style.color = "gold";
+    messageDiv.style.fontSize = "1.8em";
+    messageDiv.style.fontWeight = "bold";
 
-                setTimeout(() => {
-                    window.location.href = "index.html";
-                }, 4000);  // Extra time to celebrate
-            } else {
+    gameOver = true;
+    rollBtn.style.opacity = "0.4";
+    rollBtn.style.cursor = "not-allowed";
+
+    setTimeout(() => {
+        window.location.href = "index.html";
+    }, 4000);
+}
+ else {
                 messageDiv.textContent = `❌ Summat eivät täsmänneet (${playerSum} vs ${computerSum}) — yritä uudelleen!`;
                 messageDiv.style.color = "#ff4444";
                 rollBtn.disabled = false;  // Ready for next round
