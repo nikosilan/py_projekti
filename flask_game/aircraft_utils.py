@@ -307,8 +307,7 @@ class Events:
             kursori = yhteys.cursor()
             kursori.execute(sql, (TREASURES[satunnainen_avain], 1))
             yhteys.commit()
-            tulos = print(
-                f"Löysit aarteen: {item} joka on {TREASURES[satunnainen_avain]}€ arvoinen! Summa talletetaan tilillesi")
+            tulos = f"Löysit aarteen: {item} joka on {TREASURES[satunnainen_avain]}€ arvoinen! Summa talletetaan tilillesi"
             return tulos
 
         elif roll < treasure_chance + robbed_chance:
@@ -317,10 +316,10 @@ class Events:
             kursori = yhteys.cursor()
             kursori.execute(sql)
             yhteys.commit()
-            tulos = print("Ryöstö! Menetit 10% rahoistasi.")
+            tulos = "Ryöstö! Menetit 10% rahoistasi."
             return tulos
         else:
-            tulos = print("Ei satunnaista tapahtumaa.")
+            tulos = "Ei satunnaista tapahtumaa."
             return tulos
 
     @staticmethod
@@ -331,7 +330,7 @@ class Events:
         huolto_mahdollisuus = 0.8
 
         if random.random() > huolto_mahdollisuus:
-            tulos = print("🛠️ Lentokone on hyvässä kunnossa — ei huoltoa tällä kertaa!\n")
+            tulos = "🛠️ Lentokone on hyvässä kunnossa — ei huoltoa tällä kertaa!\n"
             return tulos
 
         # Lista mahdollisista huolloista (nimi, todennäköisyys)
@@ -350,12 +349,13 @@ class Events:
         for nimi, todennakoisyys in huollot:
             cumulative += todennakoisyys
             if r <= cumulative:
-                print(f"🔩 Huolto tehtiin: {nimi}\n")
+                tulos = f"🔩 Huolto tehtiin: {nimi}\n"
                 time.sleep(2)
-                return
+                return tulos
 
         # Jos mikään huolto ei osu
-        print("🛠️ Ei huoltoa tällä kertaa.\n")
+        tulos = "🛠️ Ei huoltoa tällä kertaa.\n"
+        return tulos
 
 
 class GameSession:

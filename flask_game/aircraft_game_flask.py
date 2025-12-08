@@ -86,6 +86,11 @@ class FlightGame:
             return out, self.choices
 
         elif self.state == "destination_wait":
+            # Quit
+            if not user_input or user_input.lower() == "q":
+                self.state = "menu"
+                return self.step(None)
+
             # Prevent crashing on None
             if user_input is None:
                 return out, self.choices
@@ -95,10 +100,6 @@ class FlightGame:
                 self.state = "choose_destination"
                 return self.step(None)
 
-            if user_input.lower() == "q":
-                out.append(f"Game over! Total flights: {self.flight_count}, Distance: {self.total_distance:.1f} km, CO2: {self.total_emissions:.1f} kg")
-                self.state = "menu"
-                return out, []
             try:
                 choice_idx = int(user_input) - 1
                 valittu = self.temp_data["destinations"][choice_idx]
@@ -112,9 +113,13 @@ class FlightGame:
             flight_cost = self.get_flight_cost()
             raha = GameState.raha_saldo(self.conn)
             if raha < flight_cost:
+                self.temp_data["raha"] = raha
+                self.state = "minigames"
                 out.append(f"Not enough money ({raha}€) to pay {flight_cost}€")
-                self.state = "menu"
-                return out, []
+                out.append(f"Do you want to earn money by doing sidetasks?")
+                self.choices = ["Yes", "No"]
+                return out, self.choices
+
 
             # Check fuel
             coords_current = (self.current_airport[3], self.current_airport[4])
@@ -142,8 +147,10 @@ class FlightGame:
             GameState.raha_muutos(self.conn, -flight_cost)
             self.current_airport = valittu
             Airport.update_current_airport(self.conn, icao)
-            Events.aircraft_huolto(self.conn)
-            Events.airport_event(self.conn)
+            huolto = Events.aircraft_huolto(self.conn)
+            aarte = Events.airport_event(self.conn)
+            out.append(huolto)
+            out.append(aarte)
 
             out.append(f"Flight done: {self.current_airport[1]} ({icao})")
             out.append(f"Distance: {distance:.1f} km, Fuel used: {fuel_needed:.1f} L, CO2: {co2_emissions:.1f} kg")
@@ -152,22 +159,62 @@ class FlightGame:
 
         # Refuel
         elif self.state == "refuel":
+            raha = GameState.raha_saldo(self.conn)
             if user_input is None:
                 return out, self.choices
             elif user_input == "Tank":
-                current_fuel = Airport.get_current_fuel(self.conn)
-                fuel_to_add = 240000 - current_fuel
-                if fuel_to_add > 0:
-                    Airport.update_fuel(self.conn, fuel_to_add)
-                GameState.raha_muutos(self.conn, -100)
-                out.append(f"✅ You have successfully refueled! You now have 240000L")
-                self.choices = ["Next"]
-                self.state = "destination_wait"
+                if raha > 100 :
+                    current_fuel = Airport.get_current_fuel(self.conn)
+                    fuel_to_add = 240000 - current_fuel
+                    if fuel_to_add > 0:
+                        Airport.update_fuel(self.conn, fuel_to_add)
+                    GameState.raha_muutos(self.conn, -100)
+                    out.append(f"✅ You have successfully refueled! You now have 240000L")
+                    self.choices = ["Next"]
+                    self.state = "destination_wait"
+                    return out, self.choices
+                elif raha < 100:
+                    self.temp_data["raha"] = raha
+                    self.state = "minigames"
+                    out.append(f"Not enough money ({raha}€) to pay for tanking (100eur).")
+                    out.append(f"Do you want to earn money by doing sidetasks?")
+                    self.choices = ["Yes", "No"]
+                    return out, self.choices
+            elif user_input == "Earn":
+                self.state = "minigames"
+                out.append("Choose sidetask:")
+                out.append("1. Noppa peli\n2. Tietokilpailu peli")
+                self.choices = ["1", "2"]
+                self.temp_data["minigame_choice"] = True
                 return out, self.choices
-            elif user_input == "Earn" or user_input == "Quit":
+            elif user_input == "Quit":
                 self.state = "menu"
-                return out, []
+                return self.step(None)
             return None
+
+        # Minigames
+        elif self.state == "minigames":
+            if "minigame_choice" not in self.temp_data:
+                if user_input is None:
+                    return out, self.choices
+                if user_input in ("Yes"):
+                    out.append("Choose sidetask:")
+                    out.append("1. Noppa peli\n2. Tietokilpailu peli")
+                    self.choices = ["1", "2"]
+                    self.temp_data["minigame_choice"] = True
+                    return out, self.choices
+                elif user_input == "No":
+                    self.state = "menu"
+                    return self.step(None)
+            else:
+                if user_input == "1":
+                    out.append("Starting noppa peli...")
+                    self.state = "minigame_noppa"
+                    return out, []
+                elif user_input == "2":
+                    out.append("Starting tietokilpailu peli...")
+                    self.state = "minigame_tietokilpailu"
+                    return out, []
 
         else:
             out.append("Game state error")

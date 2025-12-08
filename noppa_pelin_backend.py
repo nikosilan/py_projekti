@@ -5,6 +5,10 @@ import mysql.connector
 app = Flask(__name__)
 CORS(app)
 
+from aircraft_utils import GameState
+from log_in import kirjautuminen
+
+yhteys = kirjautuminen()
 
 BASE_CONFIG = {
     "host": "127.0.0.1",
@@ -21,16 +25,7 @@ def save_prize():
     prize = data.get("prize", 0)
 
     try:
-        conn = mysql.connector.connect(**BASE_CONFIG)
-        cursor = conn.cursor()
-
-        # Update raha jossa id = 1
-        query = "UPDATE game SET raha = raha + %s WHERE id = 1"
-        cursor.execute(query, (prize,))
-        conn.commit()
-
-        cursor.close()
-        conn.close()
+        GameState.raha_muutos(yhteys, prize)
 
         return jsonify({"message": f"Prize {prize}€ saved successfully!"})
     except Exception as e:

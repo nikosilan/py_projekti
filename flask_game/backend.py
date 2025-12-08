@@ -27,7 +27,12 @@ BASE_CONFIG = {
 def random_destinations(flights):
     username = request.args.get("username", "niko").lower()
     user_config = USERS.get(username, USERS["niko"])
-    conn = mysql.connector.connect(**BASE_CONFIG, **user_config)
+    # Jos yhteys tietokantaan epäonnistuu
+    try:
+        conn = mysql.connector.connect(**BASE_CONFIG, **user_config)
+    except Exception as e:
+        print("MySQL error:", e)
+        raise
 
     kohteet = GameState.random_destination(conn, flights)
     conn.close()
