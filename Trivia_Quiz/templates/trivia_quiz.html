@@ -19,6 +19,8 @@
             <br>
             {% endif %}
         {% endfor %}
+        <br>
+        <button type="button" id="nextBtn" disabled>Seuraava</button>
     </form>
 
     <div id="clock"></div>
@@ -27,6 +29,7 @@
 <script>
     // Haetaan kaikki vastausnapit
     const buttons = document.querySelectorAll(".answerBtn");
+    const nextBtn = document.getElementById("nextBtn");
 
     // Lisätään klikkaus jokaiselle napille
     buttons.forEach(button => {
@@ -47,24 +50,33 @@
             .then(response => response.json())
             .then(result => {
 
-                // Estetään napit heti, ettei voi painaa uudelleen
+                // Estetään napit, ettei voi painaa uudelleen
                 buttons.forEach(btn => btn.disabled = true);
+                // Nappi aktivoituu vastauksen jälkeen
+                if (nextBtn) {
+                nextBtn.disabled = false;
+            }
 
-                // Käydään kaikki napit läpi ja väritetään ne
+
+                // Käydään napit läpi ja lisätään värit
                 buttons.forEach(btn => {
 
-                    // Oikea vastaus → vihreäksi
+                    // Oikea vastaus vihreäksi
                     if (btn.dataset.value === result.correct) {
                         btn.style.backgroundColor = "rgba(0, 200, 0, 0.5)";
                     }
 
-                    // Käyttäjän väärä vastaus → punaiseksi
+                    // Käyttäjän väärä vastaus punaiseksi
                     if (btn.dataset.value === result.user && !result.correct_is_user) {
                         btn.style.backgroundColor = "rgba(200, 0, 0, 0.5)";
                     }
                 });
             });
+        nextBtn.addEventListener("click", function () {
+            window.location.href = "{{ url_for('trivia_quiz') }}";
         });
+        });
+
     });
 
     // Kello

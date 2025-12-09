@@ -26,6 +26,9 @@ def answer():
     user_answer = data["answer"]
     correct_answer = quiz[question]["correct"]
 
+    # Poistetaan kysytty kysymys sanakirjasta
+    quiz.pop(question)
+
     return jsonify({
         "user": user_answer,
         "correct": correct_answer,

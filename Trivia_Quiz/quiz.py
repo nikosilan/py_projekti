@@ -26,5 +26,13 @@ quiz = {
     "Kuinka monta kertaa herkempi hajuaisti koiralla on ihmiseen verrattuna?" : {
         "choices" : ["10", "100", "1000", "10 000"],
         "correct" : "10 000"
+    },
+    "Kuka artisti on voittanut historian eniten Grammy-palkintoja (vuoteen 2024 mennessä)?" : {
+        "choices" : ["Michael Jackson", "Paul McCartney", "Beyoncé", "Aretha Franklin"],
+        "correct" : "Beyoncé"
+    },
+    "Mikä on Skotlannin virallinen kansalliseläin?" : {
+        "choices" : ["Shetlanninponi", "Kotka", "Yksisarvinen", "Lassie"]
     }
+
 }
