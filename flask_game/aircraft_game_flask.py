@@ -63,7 +63,7 @@ class FlightGame:
                 cursor.close()
                 if result:
                     name, bensa, raha, flights = result
-                    out.append(f"Stats: {name}, \nFuel: {bensa}, \nMoney: {raha}€, \nFlights: {flights}")
+                    out.append(f"Stats: {name}, \n⛽Fuel: {bensa}, \n💵Money: {raha}€, \n✈️Flights: {flights}")
                     self.choices = ["Return"]
                     if user_input == "Return":
                         self.state = "menu"
