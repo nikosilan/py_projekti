@@ -3,6 +3,7 @@
 import random
 import time
 
+
 # -----------------------------
 # GameState (get_flight_count, update_flight_count, random_destination, search_for_open_destinations, tulosta_numeroitu_lista, nimea_hahmo, raha_muutos, raha_saldo)
 # -----------------------------
@@ -283,13 +284,14 @@ class Minigames:
 # -----------------------------
 
 TREASURES = {"€10 seteli": 10,
-                 "€20 seteli": 20,
-                 "koru": 50,
-                 "matkamuisto": 200}
+             "€20 seteli": 20,
+             "koru": 50,
+             "matkamuisto": 200}
 
 treasures_avaimet = ["€10 seteli", "€20 seteli", "koru", "matkamuisto"]
 random.shuffle(treasures_avaimet)
 satunnainen_avain = treasures_avaimet[0]
+
 
 class Events:
     @staticmethod
@@ -368,7 +370,7 @@ class GameSession:
         self.output_buffer.append(message)
 
     def get_output(self):
-        out = "\n".join(self.output_buffer)
+        out = self.output_buffer.copy()
         self.output_buffer.clear()
         return out
 
@@ -392,5 +394,6 @@ class GameSession:
             time.sleep(0.1)
             value = self.get_input()
         return value
+
 
 session = GameSession()

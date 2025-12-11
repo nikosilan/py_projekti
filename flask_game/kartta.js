@@ -6,13 +6,13 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 
 let airportLayer = L.layerGroup().addTo(map);
 let username = prompt("Anna käyttäjänimesi (niko, juuso, daniel, illia):") || "niko";
-const flight_count = 7;
 let currentLocation = null;
-const iframe = document.querySelector("#gameIframe");
+let currentLocationMarker = null;
+/* const iframe = document.querySelector("#gameIframe"); */
 
 // Hae satunnaiset lentokentät
-function loadRandomDestinations() {
-    fetch(`http://127.0.0.1:5000/api/random_destinations/${flight_count}?username=${username}`)
+function loadGameDestinations() {
+    fetch(`http://127.0.0.1:5001/api/current_destinations`)
         .then(res => res.json())
         .then(destinations => {
             airportLayer.clearLayers();
@@ -22,13 +22,12 @@ function loadRandomDestinations() {
                     .addTo(airportLayer)
                     .bindPopup(`<b>${ap.name}</b><br>ICAO: ${ap.icao}<br>${ap.country}`);
 
-                marker.on('click', () => {
+                /* marker.on('click', () => {
                     if (!currentLocation) {
                         alert("Nykyistä sijaintia ei löytynyt!");
                         return;
                     }
 
-                    // Lähetä viesti iframe-pelille
                     iframe.contentWindow.postMessage({
                         action: "chooseAirport",
                         from: currentLocation,
@@ -36,25 +35,35 @@ function loadRandomDestinations() {
                     }, "*");
 
                     currentLocation = { icao: ap.icao, name: ap.name, lat: ap.lat, lon: ap.lon };
-                });
+                }); */
             });
         })
         .catch(err => console.error("Kohteiden haku epäonnistui:", err));
 }
 
 // Hae nykyinen sijainti ja lisää markkeri
-fetch(`http://127.0.0.1:5000/api/current_location?username=${username}`)
-    .then(res => res.json())
-    .then(data => {
-        if (data.lat && data.lon) {
-            currentLocation = { icao: data.icao, name: data.name, lat: data.lat, lon: data.lon };
-            L.marker([data.lat, data.lon], {
-                icon: L.icon({ iconUrl: 'current.png', iconSize: [30,30] })
-            }).addTo(map)
-              .bindPopup(`Nykyinen sijainti: ${data.name}`);
-        }
-    })
-    .catch(err => console.error(err));
+function mycurrentLocation() {
+    fetch(`http://127.0.0.1:5001/api/current_location?username=${username}`)
+        .then(res => res.json())
+        .then(data => {
+            if (data.lat && data.lon) {
+                currentLocation = {icao: data.icao, name: data.name, lat: data.lat, lon: data.lon};
+                if (currentLocationMarker) {
+                    map.removeLayer(currentLocationMarker);
+                }
+                currentLocationMarker = L.marker([data.lat, data.lon], {
+                    icon: L.icon({iconUrl: 'static/Images/current.png', iconSize: [30, 30]})
+                }).addTo(map)
+                    .bindPopup(`Nykyinen sijainti: ${data.name}`);
+            }
+        })
+        .catch(err => console.error(err));
+}
 
-loadRandomDestinations();
-document.getElementById("refreshBtn").addEventListener("click", loadRandomDestinations);
+loadGameDestinations();
+mycurrentLocation();
+
+document.getElementById("refreshBtn").addEventListener("click", () => {
+    loadGameDestinations();
+    mycurrentLocation();
+});

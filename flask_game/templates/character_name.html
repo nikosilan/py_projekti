@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Name</title>
+    <link rel="stylesheet" href="../static/character_style.css">
+</head>
+<body>
+    <img src="../static/Images/name-change.jpg" alt="Name tag picture"/>
+    <form id="nameForm" method="POST">
+        <input type="text" name="name_input" placeholder="Enter your name">
+        <input type="submit" value="Submit">
+        <div id="message"></div>
+    </form>
+
+    <br>
+    <a href="../Menu.html" class="button-link">← Return to Main Menu</a>
+
+    <script>
+        const form = document.getElementById('nameForm');
+        const messageDiv = document.getElementById('message');
+
+        form.addEventListener('submit', function(e) {
+            e.preventDefault(); // prevent page reload
+
+            const name = form.name_input.value.trim();
+
+            // Validation
+            if (!name || name.length < 1 || name.length > 20 || name.includes(" ")) {
+                messageDiv.textContent = "Invalid name. Try again.";
+                messageDiv.style.color = "red";
+                return;
+            }
+
+            // Send to Flask backend via fetch
+            fetch('http://127.0.0.1:5001/greet', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ name_input: name })
+            })
+            .then(response => response.json())
+            .then(data => {
+                messageDiv.textContent = data.message;
+                messageDiv.style.color = data.success ? 'green' : 'red';
+                if(data.success) form.name_input.value = '';
+            })
+            .catch(err => {
+                messageDiv.textContent = "Error sending data to server.";
+                messageDiv.style.color = 'red';
+            });
+        });
+    </script>
+</body>
+</html>

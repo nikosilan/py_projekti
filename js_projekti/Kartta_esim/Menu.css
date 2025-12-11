@@ -1,79 +1,93 @@
 /* Kevyt teema */
 :root {
-  --bg: #f3f6fb;
-  --text: #222;
-  --primary: #4a78ff;
-  --secondary: #6e6e6e;
-  --hover: #e3e9f8;
-  --radius: 10px;
-  --fw: 600;
+    --bg: #f3f6fb;
+    --text: #222;
+    --primary: #4a78ff;
+    --secondary: #6e6e6e;
+    --hover: #e3e9f8;
+    --radius: 12px;
+    --fw: 600;
 }
 
 /* Reset */
-* { box-sizing: border-box; margin: 0; padding: 0; }
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
 
 html, body {
-  height: 100%;
-  font-family: Arial, sans-serif;
-  color: var(--text);
-  background: var(--bg);
-  display: flex;
-  justify-content: flex-end; /* napit oikealle */
-  align-items: center;
-  padding: 2rem;
+    height: 100%;
+    font-family: Arial, sans-serif;
+    color: var(--text);
+    background: var(--bg);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    padding: 2rem;
+    text-align: center;
 }
 
-/* Otsikko vasemmalla */
-.title {
-  position: absolute;
-  left: 2rem;
-  top: 2rem;
-}
+/* Otsikko */
 .title h1 {
-  font-size: 1.8rem;
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
 }
+
 .title p {
-  color: var(--secondary);
-  margin-top: .4rem;
+    color: var(--secondary);
+    font-size: 1.2rem;
 }
 
-/* Menu oikella reunalla */
+/* Menu */
 .menu {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    margin-top: 2rem;
 }
 
-/* Napit */
 /* Napit */
 .btn {
-  padding: 1.6rem 3.2rem;          /* suurempi koko */
-  font-size: 1.45rem;              /* isompi teksti */
-  font-weight: var(--fw);
-  border-radius: 14px;             /* pyöreämmät kulmat */
-  border: none;
-  cursor: pointer;
-  background: white;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.12);
-  transition: .15s ease-in-out;
-  min-width: 240px;                /* varmistaa leveän napin */
+    padding: 1.6rem 3.2rem;
+    font-size: 1.5rem;
+    font-weight: var(--fw);
+    border-radius: var(--radius);
+    border: none;
+    cursor: pointer;
+    background: white;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+    min-width: 260px;
+    text-decoration: none;
 }
 
-/* Hover */
+/* Hover effect */
 .btn:hover {
-  background: var(--hover);
-  transform: translateY(-3px);
+    background: var(--hover);
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
 }
-
 
 /* Värit */
-.btn.play { color: var(--primary); }
-.btn.settings { color: #009ca6; }
-.btn.info { color: #8a3bb8; }
+.btn.play {
+    color: var(--primary);
+}
+
+.btn.settings {
+    color: #009ca6;
+}
+
+.btn.info {
+    color: #8a3bb8;
+}
 
 /* Pienet näytöt */
 @media (max-width: 600px) {
-  body { justify-content: center; }
-  .menu { width: 100%; align-items: center; }
-  .btn { width: 80%; text-align: center; }
+    .btn {
+        width: 80%;
+        font-size: 1.2rem;
+        padding: 1.2rem 2rem;
+    }
 }

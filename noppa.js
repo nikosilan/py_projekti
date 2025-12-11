@@ -1,4 +1,7 @@
 
+if (response.open_file) {
+    window.open(response.open_file, "_blank");
+}
 
 
 let balance = 0;

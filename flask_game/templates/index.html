@@ -4,10 +4,71 @@
     <meta charset="UTF-8">
     <title>Aircraft Game</title>
     <style>
-        body { font-family: Arial, sans-serif; margin: 10px; }
-        #output { white-space: pre-wrap; border: 1px solid #ccc; padding: 10px; height: 400px; overflow-y: auto; background: #f9f9f9; }
-        #choices { margin-top: 10px; }
-        #choices button { margin: 5px; padding: 10px 20px; }
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #e0f7fa;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+
+        h1 {
+            color: #00796b;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+
+        #output {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            width: 80%;
+            max-width: 600px;
+            height: 300px;
+            padding: 15px;
+            border: 2px solid #00796b;
+            border-radius: 10px;
+            background-color: #ffffff;
+            overflow-y: auto;
+            white-space: pre-wrap;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+
+        /* Painikkeet */
+        #choices {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+
+        #choices button {
+            min-width: 100px;
+            padding: 10px 20px;
+            background-color: #00796b;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: transform 0.2s, background-color 0.2s;
+        }
+
+        #choices button:hover {
+            background-color: #004d40;
+            transform: scale(1.1);
+        }
+
+
+        #choices button:focus {
+            outline: 3px solid #004d40;
+            outline-offset: 2px;
+        }
     </style>
 </head>
 <body>
@@ -21,6 +82,13 @@
             try {
                 const response = await fetch("/get_output");
                 const data = await response.json();
+
+                for (let message of data.text) {
+                    if (typeof message === "object" && message.open_file) {
+                        window.location.href = message.open_file; // SAME TAB
+                    return;
+                    }
+                }
 
                 // Näytä tekstit
                 document.getElementById("output").textContent = data.text;
@@ -57,7 +125,7 @@
         startGame();
 
         // --- Kuuntele viestejä kartasta (PostMessage) ---
-        window.addEventListener("message", (event) => {
+        /* window.addEventListener("message", (event) => {
             const data = event.data;
             if (data.action === "chooseAirport") {
                 const from = data.from.name + " (" + data.from.icao + ")";
@@ -84,7 +152,7 @@
                       Math.cos(from.lat * rad) * Math.cos(to.lat * rad) * Math.sin(dLon/2) ** 2;
             const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
             return R * c;
-        }
+        } */
     </script>
 </body>
 </html>

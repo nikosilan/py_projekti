@@ -25,8 +25,8 @@ BASE_CONFIG = {
 # Hae satunnaiset lentokentät
 @app.route("/api/random_destinations/<int:flights>")
 def random_destinations(flights):
-    username = request.args.get("username", "niko").lower()
-    user_config = USERS.get(username, USERS["niko"])
+    username = request.args.get("username", "illia").lower()
+    user_config = USERS.get(username, USERS["illia"])
     # Jos yhteys tietokantaan epäonnistuu
     try:
         conn = mysql.connector.connect(**BASE_CONFIG, **user_config)
@@ -44,8 +44,8 @@ def random_destinations(flights):
 # Hae nykyinen sijainti
 @app.route("/api/current_location")
 def current_location():
-    username = request.args.get("username", "niko").lower()
-    user_config = USERS.get(username, USERS["niko"])
+    username = request.args.get("username", "illia").lower()
+    user_config = USERS.get(username, USERS["illia"])
     conn = mysql.connector.connect(**BASE_CONFIG, **user_config)
 
     result = Airport.get_current_airport(conn)
@@ -67,13 +67,13 @@ def current_location():
 @app.route("/api/set_destination", methods=["POST"])
 def set_destination():
     data = request.get_json()
-    username = data.get("username", "niko").lower()
+    username = data.get("username", "illia").lower()
     new_icao = data.get("icao")
 
     if not new_icao:
         return jsonify({"success": False, "message": "ICAO puuttuu"}), 400
 
-    user_config = USERS.get(username, USERS["niko"])
+    user_config = USERS.get(username, USERS["illia"])
     conn = mysql.connector.connect(**BASE_CONFIG, **user_config)
 
     # Hae nykyinen sijainti
