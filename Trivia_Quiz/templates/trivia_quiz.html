@@ -2,94 +2,92 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Trivia Quiz</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='test_style.css') }}">
+    <title>Quiz</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='test_style.css') }}">
 </head>
 <body>
-<h1>Trivia Quiz</h1>
-<h2 id="questionText"></h2>
-<div id="choicesContainer"></div>
-<div id="message"></div>
+    <h1>Quiz</h1>
+    <br>
+    <form id="QuizForm" action="" method="post">
+        <h2>{{ question }}</h2>
+        <input type="hidden" name="question" value="{{ question }}">
+        {% for choice in choices %}
+            <button type="button" class="answerBtn" data-value="{{ choice }}" >
+                {{ choice }}
+            </button>
+            {% if loop.index % 2 == 0 %}
+            <br>
+            {% endif %}
+        {% endfor %}
+        <br>
+        <button type="button" id="nextBtn" disabled>Seuraava</button>
+    </form>
+
+    <div id="clock"></div>
+
 
 <script>
-    const questionText = document.getElementById("questionText");
-    const choicesContainer = document.getElementById("choicesContainer");
-    const messageDiv = document.getElementById("message");
+    // Haetaan kaikki vastausnapit
+    const buttons = document.querySelectorAll(".answerBtn");
+    const nextBtn = document.getElementById("nextBtn");
 
-    function attachAnswerButtons() {
-        document.querySelectorAll(".answerBtn").forEach(btn => {
-            btn.addEventListener("click", function () {
-                const userAnswer = this.dataset.value;
+    // Lisätään klikkaus jokaiselle napille
+    buttons.forEach(button => {
 
-                fetch("/answer", {
-                    method: "POST",
-                    headers: {"Content-Type": "application/json"},
-                    body: JSON.stringify({question: questionText.textContent, answer: userAnswer})
+        button.addEventListener("click", function () {
+
+            const userAnswer = this.dataset.value; // käyttäjän valinta
+
+            // Lähetetään vastaus backendille
+            fetch("/answer", {
+                method: "POST",
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify({
+                    question: "{{ question }}",
+                    answer: userAnswer
                 })
-                    .then(resp => resp.json())
-                    .then(data => {
-                        // Disable buttons
-                        document.querySelectorAll(".answerBtn").forEach(b => b.disabled = true);
+            })
+            .then(response => response.json())
+            .then(result => {
 
-                        // Color buttons
-                        document.querySelectorAll(".answerBtn").forEach(b => {
-                            if (b.dataset.value === data.correct) b.style.backgroundColor = "green";
-                            if (b.dataset.value === data.user && data.user !== data.correct) b.style.backgroundColor = "red";
-                        });
+                // Estetään napit, ettei voi painaa uudelleen
+                buttons.forEach(btn => btn.disabled = true);
+                // Nappi aktivoituu vastauksen jälkeen
+                if (nextBtn) {
+                nextBtn.disabled = false;
+            }
 
-                        messageDiv.textContent = data.message;
 
-                        setTimeout(() => {
-                            if (data.finished) {
-                                alert(`Game over! Your total prize is ${data.total_prize} euros.`);
-                                // Game ends, do nothing else
-                                questionText.textContent = "";
-                                choicesContainer.innerHTML = "";
-                                messageDiv.innerHTML = `<strong>The game is over!</strong><br>
-                                        Your total prize is <strong>${data.total_prize} euros</strong>.<br>
-                                        You can return to the main game now.`;
-                                return;
-                            }
-                            loadQuestion();
-                        }, 1500);
-                    });
-            });
-        });
-    }
+                // Käydään napit läpi ja lisätään värit
+                buttons.forEach(btn => {
 
-    function loadQuestion() {
-        fetch("/get_question")
-            .then(resp => resp.json())
-            .then(data => {
-                if (data.finished) {
-                    alert(`Game over! Your total prize is ${data.total_prize} euros.`);
-                    questionText.textContent = "";
-                    choicesContainer.innerHTML = "";
-                    messageDiv.textContent = "";
-                    return;
-                }
+                    // Oikea vastaus vihreäksi
+                    if (btn.dataset.value === result.correct) {
+                        btn.style.backgroundColor = "rgba(0, 200, 0, 0.5)";
+                    }
 
-                questionText.textContent = data.question;
-                choicesContainer.innerHTML = "";
-                data.choices.forEach((choice, index) => {
-                    const btn = document.createElement("button");
-                    btn.className = "answerBtn";
-                    btn.dataset.value = choice;
-                    btn.textContent = choice;
-                    choicesContainer.appendChild(btn);
-                    if ((index + 1) % 2 === 0) {
-                        choicesContainer.appendChild(document.createElement("br"));
+                    // Käyttäjän väärä vastaus punaiseksi
+                    if (btn.dataset.value === result.user && !result.correct_is_user) {
+                        btn.style.backgroundColor = "rgba(200, 0, 0, 0.5)";
                     }
                 });
-
-
-                messageDiv.textContent = "";
-                attachAnswerButtons();
             });
-    }
+        nextBtn.addEventListener("click", function () {
+            window.location.href = "{{ url_for('trivia_quiz') }}";
+        });
+        });
 
-    // Start the game once
-    fetch("/start_game").then(() => loadQuestion());
+    });
+
+    // Kello
+    function timeNow() {
+        const time = new Date();
+        document.getElementById("clock").textContent = time.toLocaleTimeString('fi-FI');
+    }
+    setInterval(timeNow, 1000);
+    timeNow();
+
 </script>
+
 </body>
 </html>

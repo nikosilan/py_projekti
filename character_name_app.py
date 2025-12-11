@@ -1,4 +1,5 @@
 from flask import Flask, render_template, request, flash, redirect
+from flask_game.aircraft_utils import GameState
 
 app = Flask(__name__)
 app.secret_key = "secret123"   # tai mikä tahansa muu merkkijono
@@ -15,10 +16,11 @@ def greet():
         flash("Invalid name. Try again.")
         return redirect("/")
 
-    # tähän väliin tietokantafunktiokutsu
+    # tässä välissä tietokantafunktiokutsu
+    GameState.nimea_hahmo() #tähän argumenteiksi: yhteys, name, id=1
 
     flash("Hello " + str(request.form['name_input']) + "! Your name has now been saved.")
     return render_template("character_name.html")
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(port=5002, debug=True)
