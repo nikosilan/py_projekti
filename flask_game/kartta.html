@@ -7,25 +7,45 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
 
     <style>
+
+
+
+
+
+
+
+
+
+
+
         @font-face {
   font-family: 'lato';
   src: url('Static/Fonts/Lato-Regular.ttf') format('truetype');
 }
 
+        body {
 
+}
 
         * { box-sizing: border-box; }
-        body {
-            font-family: Lato, Arial, sans-serif;
-            margin: 0;
-            padding: 20px 20px 100px 20px;
-            background: #f0f4f8;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-        }
+       body {
+    font-family: Lato, Arial, sans-serif;
+    margin: 0;
+    padding: 20px 20px 100px 20px;
+
+
+    background-image: url('image.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
 
         .container {
             width: 100%;
@@ -41,10 +61,16 @@
             border-radius: 16px;
             overflow: hidden;
             box-shadow: 0 12px 40px rgba(0,0,0,0.2);
+
+    background: linear-gradient(to bottom, #87CEEB, #E0F7FA);
+
         }
 
         #flightInfo {
-            background: white;
+
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    backdrop-filter: blur(10px);
+
             border-radius: 16px;
             overflow: hidden;
             box-shadow: 0 12px 40px rgba(0,0,0,0.2);
@@ -69,14 +95,21 @@
             padding: 16px 40px;
             font-size: 18px;
             font-weight: 600;
-            background: #0066ff;
+           background: linear-gradient(to right, #0066ff, #00c6ff);
             color: white;
             border: none;
             border-radius: 14px;
             cursor: pointer;
             box-shadow: 0 8px 25px rgba(0,102,255,0.5);
             transition: all 0.25s;
+
+
+
+
+
+
         }
+
 
         #refreshBtn:hover {
             background: #0052cc;

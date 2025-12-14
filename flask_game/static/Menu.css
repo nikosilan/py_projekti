@@ -2,114 +2,138 @@
   display: none;
   position: fixed;
   inset: 0;
-  background: rgba(0,0,0,0.6);
+  background: rgba(0,0,0,0.7);
   z-index: 1000;
+  backdrop-filter: blur(4px);
 }
 
 .modal-content {
-  background: white;
-  color: black;
-  padding: 20px;
-  max-width: 400px;
-  margin: 20vh auto;
-  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.95);
+  color: #222;
+  padding: 24px;
+  max-width: 480px;
+  margin: 15vh auto;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(10px);
 }
 
 
-
-
-
-
-/* Kevyt teema */
 :root {
-    --bg: #f3f6fb;
-    --text: #222;
-    --primary: #4a78ff;
-    --secondary: #6e6e6e;
-    --hover: #e3e9f8;
-    --radius: 12px;
+    --bg-start: #0f172a;
+    --bg-end: #1e293b;
+    --text: #e2e8f0;
+    --primary: #3b82f6;
+    --accent-green: #10b981;
+    --accent-purple: #a78bfa;
+    --card-bg: rgba(255, 255, 255, 0.08);
+    --card-border: rgba(255, 255, 255, 0.15);
+    --hover: rgba(255, 255, 255, 0.15);
+    --radius: 16px;
     --fw: 600;
 }
 
-/* Reset */
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-}
 
-html, body {
+body {
     height: 100%;
-    font-family: Arial, sans-serif;
+    font-family: 'Segoe UI', Arial, sans-serif;
     color: var(--text);
-    background: var(--bg);
+    background: linear-gradient(135deg, var(--bg-start) 0%, var(--bg-end) 100%);
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
     padding: 2rem;
     text-align: center;
+    min-height: 100vh;
+    margin: 0;
 }
 
-/* Otsikko */
+
 .title h1 {
-    font-size: 2.5rem;
+    font-size: 3.2rem;
     margin-bottom: 0.5rem;
+    color: white;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
 }
 
 .title p {
-    color: var(--secondary);
-    font-size: 1.2rem;
+    color: #94a3b8;
+    font-size: 1.3rem;
+    margin-bottom: 2rem;
 }
 
 /* Menu */
 .menu {
     display: flex;
     flex-direction: column;
-    gap: 1.5rem;
-    margin-top: 2rem;
+    gap: 1.8rem;
+    margin-top: 1rem;
 }
 
-/* Napit */
+
 .btn {
     padding: 1.6rem 3.2rem;
     font-size: 1.5rem;
     font-weight: var(--fw);
     border-radius: var(--radius);
-    border: none;
+    border: 1px solid var(--card-border);
     cursor: pointer;
-    background: white;
-    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
-    transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
-    min-width: 260px;
+    background: var(--card-bg);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease;
+    min-width: 280px;
     text-decoration: none;
+    color: var(--text);
 }
 
-/* Hover effect */
+
 .btn:hover {
     background: var(--hover);
-    transform: translateY(-5px);
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    transform: translateY(-8px);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+    border-color: rgba(255, 255, 255, 0.3);
 }
 
-/* Värit */
+
 .btn.play {
     color: var(--primary);
+    border-color: rgba(59, 130, 246, 0.4);
+}
+
+.btn.play:hover {
+    background: rgba(59, 130, 246, 0.15);
 }
 
 .btn.settings {
-    color: #009ca6;
+    color: var(--accent-green);
+    border-color: rgba(16, 185, 129, 0.4);
+}
+
+.btn.settings:hover {
+    background: rgba(16, 185, 129, 0.15);
 }
 
 .btn.info {
-    color: #8a3bb8;
+    color: var(--accent-purple);
+    border-color: rgba(167, 139, 250, 0.4);
 }
 
-/* Pienet näytöt */
+.btn.info:hover {
+    background: rgba(167, 139, 250, 0.15);
+}
+
+
 @media (max-width: 600px) {
+    .title h1 {
+        font-size: 2.5rem;
+    }
+
     .btn {
-        width: 80%;
-        font-size: 1.2rem;
-        padding: 1.2rem 2rem;
+        width: 90%;
+        font-size: 1.3rem;
+        padding: 1.4rem 2rem;
     }
 }
