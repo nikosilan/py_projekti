@@ -1,3 +1,9 @@
+@font-face {
+  font-family: 'lato';
+  src: url('static/Fonts/Lato-Regular.ttf') format('truetype');
+}
+
+
 body {
     margin: 0;
     height: 100vh;
@@ -6,7 +12,7 @@ body {
     align-items: center;
   background: linear-gradient(to bottom, #0b3d91, #87CEEB);
 
-    font-family: Arial, sans-serif;
+    font-family: Lato, sans-serif;
     color: white;
     flex-direction: column;
 }
