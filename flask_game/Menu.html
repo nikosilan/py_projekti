@@ -16,8 +16,38 @@
 <div class="menu">
     <a href="latautuminen.html" class="btn play">▶ Play</a>
     <a href="templates/character_name.html" class="btn settings">✈️ Create Character</a>
-    <a href="info.html" class="btn info">ℹ Info</a>
+    <a class="btn info" onclick="document.getElementById('myModal').style.display='block'">
+  ℹ Info
+</a>
 </div>
+
+<!-- MODAL -->
+<div class="modal" id="myModal">
+    <div class="modal-content">
+        <p>- Aircraft Game on tekstipohjainen lentopeli, jossa pelaaja toimii lentäjänä ja hallinnoi sekä omaa
+            lentokonetta että talouttaan.<br>
+            - Pelaajan tehtävänä on lentää eri puolille maailmaa todellisten lentokenttien välillä, ansaita rahaa ja
+            kasvattaa lentojen määrää.<br>
+            - Jokainen lento kuluttaa polttoainetta ja maksaa tietyn summan rahaa, joten pelaajan täytyy hallita
+            resursseja viisaasti.<br>
+            - Rahaa voi tienata pelaamalla minipelejä, kuten noppa peli ja tietokilpailu, tai osallistumalla
+            satunnaistapahtumiin lentojen välillä.<br>
+            - Pelin ideana on matkustaa ympäri maailmaa suurten lentokenttien välillä, ansaita rahaa ja kasvattaa
+            lentojen määrää, jotta pelaaja voi avata uusia mantereita.<br>
+            - Jokaisessa kentässä on mahdollisuus satunnaistapahtumaan, lentokoneen huoltoon, rahan ansaitsemiseen
+            minipeleillä (noppa peli ja tietokilpailu) tai pelistä poistumiseen.<br>
+            - Tavoitteena on edetä mahdollisimman pitkälle halliten omaa taloutta ja polttoainetta.</p>
+        <button onclick="closeModal()">Close</button>
+    </div>
+</div>
+
+<script>
+function closeModal() {
+    document.getElementById('myModal').style.display = 'none';
+}
+
+</script>
+
 
 </body>
 </html>
