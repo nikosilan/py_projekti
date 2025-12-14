@@ -4,6 +4,12 @@ from flask_cors import CORS
 from aircraft_utils import GameState, Airport
 from geopy.distance import geodesic
 
+
+##############################################
+# IMPORTOITU APP.PY TIEDOSTOON
+##############################################
+
+
 app = Flask(__name__)
 CORS(app)
 

@@ -4,6 +4,7 @@ from aircraft_utils import GameState, Airport, Minigames, Events, session
 import webbrowser
 
 
+# Koko peli on tässä
 class FlightGame:
     def __init__(self, yhteys):
         self.conn = yhteys
@@ -35,16 +36,19 @@ class FlightGame:
         else:
             return 1000
 
+    # Jokainen klikkaus on step, eli jokainen valinta on siis step
     def step(self, user_input):
         out = []
         self.choices.clear()
 
+        # Menu
         if self.state == "menu":
             out.append("Welcome! Choose an option:\nStart game\nPlayer stats\nExit")
             self.choices = ["Start", "Stats", "Exit"]
             self.state = "menu_wait"
             return out, self.choices
 
+        # Menu valinnat
         elif self.state == "menu_wait":
             if user_input == "Start":
                 self.state = "choose_destination"
@@ -68,16 +72,18 @@ class FlightGame:
                 self.state = "menu"
                 return out, self.choices
             elif user_input == "Exit":
-                out.append("Goodbye!")
+                out.append(
+                    "Goodbye!\nThe new tab of Menu is now open.\nYou can as well restart the page\nto continue playing the game!")
                 self.state = "menu"
-                webbrowser.open("Menu.html")
+                webbrowser.open("Menu.html", new=0)
                 return out, []
             else:
                 out.append("Invalid choice, pick 1-3")
                 return out, self.choices
 
+        # Kohteiden-lentojen valinta
         elif self.state == "choose_destination":
-            # Show flight info
+            # Näytä lennon tiedot
             flight_cost = self.get_flight_cost()
             raha = GameState.raha_saldo(self.conn)
             avatut_maanosat = GameState.search_for_open_destinations(self.flight_count)
@@ -86,7 +92,7 @@ class FlightGame:
             out.append(f"\nFlight cost: {flight_cost}€, you have {raha}€")
             out.append(f"\n\nOpened destinations:\n{', '.join(avatut_maanosat)}")
 
-            # Generate destinations
+            # Luo uudet satunnaiset kohteet (random)
             kohteet = GameState.random_destination(self.conn, self.flight_count)
             self.temp_data["destinations"] = kohteet
             for idx, (_, name, country, _, _) in enumerate(kohteet, 1):
@@ -96,6 +102,7 @@ class FlightGame:
             self.state = "destination_wait"
             return out, self.choices
 
+        # Pelaajan kohteen valinta
         elif self.state == "destination_wait":
             # Quit
             if not user_input or user_input.lower() == "quit":
@@ -234,6 +241,7 @@ class FlightGame:
                 self.state = "choose_destination"
                 return self.step(None)
 
+        # Jos peli crashaa
         else:
             out.append("Game state error\n")
             self.state = "menu"

@@ -17,6 +17,7 @@ game = FlightGame(yhteys)
 CORS(app)
 
 
+# Pääpelin asiat
 @app.route("/")
 def home():
     return render_template("index.html")
@@ -75,6 +76,7 @@ def reset_game():
     return jsonify({"status": "ok"})
 
 
+# Noppa pelin asiat
 @app.route("/noppa")
 def noppa():
     return render_template("noppa.html")
@@ -93,6 +95,7 @@ def save_prize():
         return jsonify({"error": str(e)}), 500
 
 
+# Hahmon luonti asiat
 @app.route('/greet', methods=['POST'])
 def greet():
     data = request.get_json()
@@ -127,7 +130,7 @@ def current_location():
         return jsonify({"message": "Sijaintia ei löytynyt"}), 404
 
 
-# Päivitä sijainti ja laske etäisyys
+# Päivitä sijainti ja laske etäisyys (EMME SITÄ KÄYTTÄÄ, KOSKA PÄÄPELI JO TEKEE SITÄ)
 '''@app.route("/api/set_destination", methods=["POST"])
 def set_destination():
     data = request.get_json()
@@ -173,6 +176,8 @@ def set_destination():
         "distance_km": distance
     })'''
 
+
+# Tietokilpailu (Trivia Quiz) asiat
 @app.route('/tietokilpailu')
 def tietokilpailu():
     return render_template('trivia_quiz.html')
@@ -247,6 +252,7 @@ def save_prize_tietokilpailu():
         return jsonify({"message": f"Prize {prize}€ saved successfully!"})
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+
 
 if __name__ == "__main__":
     app.run(port=5001, debug=True)
