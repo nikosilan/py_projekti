@@ -4,9 +4,15 @@ from log_in import kirjautuminen
 from aircraft_game_flask import FlightGame, session
 from aircraft_utils import GameSession, GameState, Airport
 from geopy.distance import geodesic
+import random
+from quiz import quiz as full_quiz
+from flask import session as flask_session
+
+TOTAL_QUESTIONS = 3
 
 yhteys = kirjautuminen()
-app = Flask(__name__)
+app = Flask(__name__, static_folder='static')
+app.secret_key = "secretkey"
 game = FlightGame(yhteys)
 CORS(app)
 
@@ -166,6 +172,81 @@ def set_destination():
         },
         "distance_km": distance
     })'''
+
+@app.route('/tietokilpailu')
+def tietokilpailu():
+    return render_template('trivia_quiz.html')
+
+@app.route('/start_game')
+def start_game():
+    # Pick 3 random questions for this session
+    flask_session['questions'] = random.sample(list(full_quiz.keys()), TOTAL_QUESTIONS)
+    flask_session['current_index'] = 0
+    flask_session['prize'] = 0
+    return jsonify({"started": True})
+
+
+@app.route('/get_question')
+def get_question():
+    idx = flask_session.get('current_index', 0)
+    questions = flask_session.get('questions', [])
+
+    if idx >= len(questions):
+        total_prize = flask_session.get('prize', 0)
+        flask_session.clear()
+        return jsonify({"finished": True, "total_prize": total_prize})
+
+    question = questions[idx]
+    data = full_quiz[question]
+    return jsonify({
+        "question": question,
+        "choices": data['choices']
+    })
+
+
+@app.route('/answer', methods=['POST'])
+def answer():
+    data = request.get_json()
+    question = data['question']
+    user_answer = data['answer']
+
+    correct_answer = full_quiz[question]['correct']
+    reward = 0
+    message = ""
+
+    if user_answer == correct_answer:
+        reward = random.randint(10, 200)
+        flask_session['prize'] += reward
+        message = f"Correct! You earned {reward}€!"
+    else:
+        message = "Wrong! You earned nothing."
+
+    flask_session['current_index'] += 1
+    finished = flask_session['current_index'] >= TOTAL_QUESTIONS
+    total_prize = flask_session.get('prize', 0)
+
+    if finished:
+        flask_session.clear()
+
+    return jsonify({
+        "user": user_answer,
+        "correct": correct_answer,
+        "message": message,  # <- include message
+        "finished": finished,
+        "total_prize": total_prize
+    })
+
+@app.route('/api/save-prize-tietokilpailu', methods=['POST'])
+def save_prize_tietokilpailu():
+    data = request.get_json()
+    prize = data.get('total_prize')
+
+    try:
+        GameState.raha_muutos(yhteys, prize)
+
+        return jsonify({"message": f"Prize {prize}€ saved successfully!"})
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 if __name__ == "__main__":
     app.run(port=5001, debug=True)

@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Trivia Quiz</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='tietokilpailu_style.css') }}">
+</head>
+<body>
+<h1>Trivia Quiz</h1>
+<h2 id="questionText"></h2>
+<div id="choicesContainer"></div>
+<div id="message"></div>
+<div id="clock"></div>
+
+<script>
+    const questionText = document.getElementById("questionText");
+    const choicesContainer = document.getElementById("choicesContainer");
+    const messageDiv = document.getElementById("message");
+
+    function attachAnswerButtons() {
+        document.querySelectorAll(".answerBtn").forEach(btn => {
+            btn.addEventListener("click", function () {
+                const userAnswer = this.dataset.value;
+
+                fetch("/answer", {
+                    method: "POST",
+                    headers: {"Content-Type": "application/json"},
+                    body: JSON.stringify({question: questionText.textContent, answer: userAnswer})
+                })
+                    .then(resp => resp.json())
+                    .then(data => {
+                        // Disable buttons
+                        document.querySelectorAll(".answerBtn").forEach(b => b.disabled = true);
+
+                        // Color buttons
+                        document.querySelectorAll(".answerBtn").forEach(b => {
+                            if (b.dataset.value === data.correct) b.style.backgroundColor = "green";
+                            if (b.dataset.value === data.user && data.user !== data.correct) b.style.backgroundColor = "red";
+                        });
+
+                        messageDiv.textContent = data.message;
+
+                        setTimeout(() => {
+                            if (data.finished) {
+                                alert(`Game over! Your total prize is ${data.total_prize} euros.`);
+
+                                // Send prize to backend
+                                fetch("http://127.0.0.1:5001/api/save-prize-tietokilpailu", {
+                                    method: "POST",
+                                    headers: {"Content-Type": "application/json"},
+                                    body: JSON.stringify({total_prize: data.total_prize})
+                                })
+                                    .then(resp => resp.json())
+                                    .then(saveResp => {
+                                        if (saveResp.error) console.error("Error saving prize:", saveResp.error);
+                                        else console.log(saveResp.message);
+                                    });
+
+                                questionText.textContent = "";
+                                choicesContainer.innerHTML = "";
+                                messageDiv.innerHTML = `<strong>The game is over!</strong><br>
+                                        Your total prize is <strong>${data.total_prize} euros</strong>.`;
+
+                                return;
+                            }
+                            loadQuestion();
+                        }, 1500);
+                    });
+            });
+        });
+    }
+
+    function loadQuestion() {
+        fetch("/get_question")
+            .then(resp => resp.json())
+            .then(data => {
+                if (data.finished) {
+                    alert(`Game over! Your total prize is ${data.total_prize} euros.`);
+                    questionText.textContent = "";
+                    choicesContainer.innerHTML = "";
+                    messageDiv.textContent = "";
+                    return;
+                }
+
+                questionText.textContent = data.question;
+                choicesContainer.innerHTML = "";
+                data.choices.forEach((choice, index) => {
+                    const btn = document.createElement("button");
+                    btn.className = "answerBtn";
+                    btn.dataset.value = choice;
+                    btn.textContent = choice;
+                    choicesContainer.appendChild(btn);
+                    if ((index + 1) % 2 === 0) {
+                        choicesContainer.appendChild(document.createElement("br"));
+                    }
+                });
+
+
+                messageDiv.textContent = data.message;
+                attachAnswerButtons();
+            });
+    }
+
+    // Kello
+    function timeNow() {
+        const time = new Date();
+        document.getElementById("clock").textContent = time.toLocaleTimeString('fi-FI');
+    }
+    setInterval(timeNow, 1000);
+    timeNow();
+
+    // Start the game once
+    fetch("/start_game").then(() => loadQuestion());
+</script>
+</body>
+</html>

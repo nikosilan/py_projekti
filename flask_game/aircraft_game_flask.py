@@ -1,10 +1,6 @@
-import random
-import time
 from geopy.distance import geodesic
 from aircraft_config import aircraft, aircraft_fuel_burn, FUEL_DENSITY, CO2_EMISSION_FACTOR
 from aircraft_utils import GameState, Airport, Minigames, Events, session
-
-import os
 import webbrowser
 
 
@@ -230,11 +226,13 @@ class FlightGame:
                     out.append("\nStarting tietokilpailu peli...")
                     self.state = "minigame_tietokilpailu"
                     self.choices = ["Return"]
-                    webbrowser.open_new_tab(f'http://127.0.0.1:5100/')
+                    webbrowser.open_new_tab(f'http://127.0.0.1:5001/tietokilpailu')
                     return out, self.choices
-        if user_input == "Return":
-            self.state = "choose_destination"
-            return self.step(None)
+        elif self.state == "minigame_tietokilpailu":
+            if user_input == "Return":
+                self.temp_data.pop("minigame_choice", None)
+                self.state = "choose_destination"
+                return self.step(None)
 
         else:
             out.append("Game state error\n")

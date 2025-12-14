@@ -32,7 +32,8 @@ quiz = {
         "correct" : "Beyoncé"
     },
     "Mikä on Skotlannin virallinen kansalliseläin?" : {
-        "choices" : ["Shetlanninponi", "Kotka", "Yksisarvinen", "Lassie"]
+        "choices" : ["Shetlanninponi", "Kotka", "Yksisarvinen", "Lassie"],
+        "correct" : ["Yksisarvinen"]
     }
 
 }
