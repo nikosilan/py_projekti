@@ -1,19 +1,20 @@
 # ✈️ Lentopeli
 
+## 🚨 HUOM! Ohjelmisto 2 selain-pohjainen peli löytyy AINA KANSIOSTA "flask_game"!!!
+## 🚨 HUOM! Sinun täytyy tehdä oikean yhteyden, jonka ohjausta löytyy "Ennen pelin käynnistämistä"
+
 ## Pelistä lyhyesti:
 Lentopeli on tekstipohjainen lentopeli, jossa pelaaja pääsee matkustamaan ympäri maailmaa suurten lentokenttien välillä.  
 Pelin tavoitteena on ansaita rahaa, hallita polttoainetta ja suorittaa lentoja edetäkseen pelissä ja avatakseen uusia mantereita.  
 
-Peli alkaa päävalikosta, joka tervehtii ja antaa neljä vaihtoehtoa:
-1. **Aloita peli**  
-2. **Luo uusi pelaaja**  
-3. **Katso pelaajan tilastot**  
-4. **Poistu pelistä**
+Peli alkaa päävalikosta, joka tervehtii ja antaa kolme vaihtoehtoa:
+1. **Aloita peli**
+2. **Luo uusi pelaaja**
+3. **Katso tutoriaalli**
 
-Jos olet uusi pelaaja, valitse ensin vaihtoehto **2** luodaksesi hahmon.  
-Sen jälkeen voit aloittaa pelin valitsemalla **1**.  
-Jos sinulla on jo tallennettu peli, voit tarkastella etenemistäsi valinnalla **3**.  
-Pelistä poistutaan valinnalla **4**.
+Jos olet uusi pelaaja, valitse ensin vaihtoehto **Luo hahmo** luodaksesi hahmon.
+Sen jälkeen voit aloittaa pelin valitsemalla **Aloita**.
+Jos tarvitset apua ymmärtääksesi miten peli toimii, paina **Info**.
 
 ---
 
@@ -63,7 +64,7 @@ ALTER TABLE game MODIFY flights INT NOT NULL DEFAULT 0;
 ---
 
 ### 2 MySQL-yhteyden asetukset
-Avaa tiedosto **LOG_IN.PY** ja lisää sinne omat tietosi tietokantayhteyttä varten.
+Avaa tiedosto **flask_game/LOG_IN.PY** ja lisää sinne omat tietosi tietokantayhteyttä varten.
 
 - Luo oma kirjautumistunnus kohtaan:
   ```python
@@ -73,13 +74,25 @@ Avaa tiedosto **LOG_IN.PY** ja lisää sinne omat tietosi tietokantayhteyttä va
   ```python
   yhteys = mysql.connector.connect("tähän omat tietosi")
   ```
+  
+### 3. Tärkeää yhteyden toiminnasta
+
+Jos olet lisännyt kaikki kirjautumistiedot **oikein** kohdan 2 mukaisesti, kaiken pitäisi toimia normaalisti.
+
+Kun peli käynnistyy ja latausruudun jälkeen avautuu ponnahdusikkuna, joka pyytää nimeäsi, syötä täsmälleen **sama nimi**, jonka määrittelit MySQL–Python-yhteyttä varten kohdassa 2.
+
+Tämän jälkeen peli etenee normaalisti.
+Jos ilmenee virheitä tai peli ei etene, **OTA VÄLITTÖMÄSTI YHTEYTTÄ PELIN TEKIJÖIHIN**.
 
 ---
 
 ### 3. Pelin aloitus
-Ajaa ensin **AIRCRAFT_MAIN.PY** tämä on tärkeä!
+Ajaa ensin **flask_game/APP.PY** tämä on tärkeä! Kirjaudu sisään PyCharm/komennon avulla kirjoittaen sinne oma nimesi.
+Sitten avaa **flask_game/Menu.html** tämä avaa peli!
 Kun peli on käynnissä, **luo ensin hahmo** ennen kuin alat pelata normaalisti.  
 Muuten peli ei pysty seuraamaan raha-, polttoaine- tai lentotietoja.
+
+**MUISTA AINA! päivittää kohteet klikkaamalla "Päivitä kohteet" painiketta kun aloitat pelaamaan, lennät seuraavaan kohteeseen tai jos sinun kohteesi päivittyy (minipelien jälkeen, tankauksen jälkeen yms.)**
 
 ---
 

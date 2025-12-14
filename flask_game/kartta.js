@@ -5,7 +5,7 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 }).addTo(map);
 
 let airportLayer = L.layerGroup().addTo(map);
-let username = prompt("Anna käyttäjänimesi (niko, juuso, daniel, illia):") || "niko";
+let username = prompt("Anna käyttäjänimesi (niko, juuso, daniel, illia TAI muu oma nimi):");
 let currentLocation = null;
 let currentLocationMarker = null;
 /* const iframe = document.querySelector("#gameIframe"); */
