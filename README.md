@@ -75,6 +75,8 @@ Avaa tiedosto **flask_game/LOG_IN.PY** ja lisää sinne omat tietosi tietokantay
   yhteys = mysql.connector.connect("tähän omat tietosi")
   ```
   
+---
+  
 ### 3. Tärkeää yhteyden toiminnasta
 
 Jos olet lisännyt kaikki kirjautumistiedot **oikein** kohdan 2 mukaisesti, kaiken pitäisi toimia normaalisti.
@@ -86,7 +88,7 @@ Jos ilmenee virheitä tai peli ei etene, **OTA VÄLITTÖMÄSTI YHTEYTTÄ PELIN T
 
 ---
 
-### 3. Pelin aloitus
+## Pelin aloitus
 Ajaa ensin **flask_game/APP.PY** tämä on tärkeä! Kirjaudu sisään PyCharm/komennon avulla kirjoittaen sinne oma nimesi.
 Sitten avaa **flask_game/Menu.html** tämä avaa peli!
 Kun peli on käynnissä, **luo ensin hahmo** ennen kuin alat pelata normaalisti.  
